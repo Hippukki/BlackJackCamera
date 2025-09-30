@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+ <g class="layer">
+  <title>Layer 1</title>
+  <path d="m-1,1l512,0l0,512l-512,0l0,-512z" fill="#EF3124" id="svg_1" transform="matrix(1 0 0 1 0 0)"/>
+  <g id="svg_4">
+   <text fill="white" font-family="Arial" font-size="320" font-weight="bold" id="svg_2" text-anchor="middle" transform="matrix(0.574371 0 0 0.582958 120.456 140.041)" x="238.39971" y="272.34626">A</text>
+   <rect fill="white" height="29.73085" id="svg_3" width="133.22862" x="190.77138" y="332.26915"/>
+   <ellipse cx="256.29364" cy="172.07229" fill="white" id="svg_7" rx="15.28853" ry="16.32281"/>
+  </g>
+ </g>
+</svg>
+

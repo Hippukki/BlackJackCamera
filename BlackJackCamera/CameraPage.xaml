@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="BlackJackCamera.CameraPage"
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="Transparent">
+
+  <Grid RowDefinitions="Auto,*,Auto">
+
+    <!-- CameraView (Camera.MAUI) -->
+    <toolkit:CameraView x:Name="cameraView"
+                  Grid.RowSpan="3"
+                  HorizontalOptions="FillAndExpand"
+                  MediaCaptured="OnMediaCaptured"
+                  VerticalOptions="FillAndExpand"
+                  ZoomFactor="1"/>
+
+    <!-- Замороженное изображение и затемнение на весь экран -->
+    <Image x:Name="FrozenImage"
+           Grid.RowSpan="3"
+           Aspect="AspectFill"
+           HorizontalOptions="FillAndExpand"
+           VerticalOptions="FillAndExpand"
+           IsVisible="False"/>
+
+    <Border x:Name="DarkOverlay"
+            Grid.RowSpan="3"
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="FillAndExpand"
+            IsVisible="False"
+            BackgroundColor="Transparent">
+      <Border.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Color="#70000000" Offset="0.0" />
+          <GradientStop Color="#60222222" Offset="0.5" />
+          <GradientStop Color="#70000000" Offset="1.0" />
+        </LinearGradientBrush>
+      </Border.Background>
+      <Border.StrokeShape>
+        <RoundRectangle CornerRadius="0"/>
+      </Border.StrokeShape>
+    </Border>
+
+    <ActivityIndicator x:Name="LoadingIndicator"
+                      Grid.RowSpan="3"
+                      HorizontalOptions="Center"
+                      VerticalOptions="Center"
+                      Color="White"
+                      WidthRequest="60"
+                      HeightRequest="60"
+                      IsRunning="False"
+                      IsVisible="False"/>
+
+    <!-- TOP BAR -->
+    <Grid Grid.Row="0" Padding="16,12,16,8" ColumnDefinitions="Auto,*,Auto" BackgroundColor="Transparent">
+      <ImageButton Source="icon_back.svg" BackgroundColor="Transparent" Clicked="OnBackClicked" WidthRequest="28" HeightRequest="28"/>
+      <Label Grid.Column="1" Text="Умная камера" HorizontalOptions="Center" VerticalOptions="Center" TextColor="White" FontSize="18" FontAttributes="Bold" BackgroundColor="Transparent"/>
+      <ImageButton Grid.Column="2" Source="icon_info.svg" BackgroundColor="Transparent" Clicked="OnInfoClicked" WidthRequest="28" HeightRequest="28"/>
+    </Grid>
+
+    <!-- OVERLAYS -->
+    <Grid Grid.Row="1" BackgroundColor="Transparent">
+
+      <!-- Overlays -->
+      <AbsoluteLayout>
+
+        <!-- угловые элементы (вырезанные PNG) -->
+        <Image Source="corner_tl.svg" AbsoluteLayout.LayoutBounds="0.06,0.08,72,72" AbsoluteLayout.LayoutFlags="PositionProportional"/>
+        <Image Source="corner_tr.svg" AbsoluteLayout.LayoutBounds="0.94,0.08,72,72" AbsoluteLayout.LayoutFlags="PositionProportional"/>
+        <Image Source="corner_bl.svg" AbsoluteLayout.LayoutBounds="0.06,0.92,72,72" AbsoluteLayout.LayoutFlags="PositionProportional"/>
+        <Image Source="corner_br.svg" AbsoluteLayout.LayoutBounds="0.94,0.92,72,72" AbsoluteLayout.LayoutFlags="PositionProportional"/>
+
+        <!-- подсказка (внизу поверх preview) -->
+        <Frame x:Name="HintPill"
+                AbsoluteLayout.LayoutBounds="0.5,0.78,0.86,-1"
+                AbsoluteLayout.LayoutFlags="PositionProportional,WidthProportional"
+                BackgroundColor="#55444444"
+                CornerRadius="21"
+                Padding="12,6"
+                HasShadow="False"
+                HorizontalOptions="Center">
+            <Label Text="Распознаём QR, номера телефона, карты и многое другое"
+                   TextColor="#E6E6E6"
+                   FontSize="14"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   HorizontalTextAlignment="Center"
+                   VerticalTextAlignment="Center"
+                   LineBreakMode="WordWrap"
+                   BackgroundColor="Transparent"/>
+        </Frame>
+
+        <!-- pill с результатом (скрыт по умолчанию) -->
+        <Frame x:Name="RecognitionPill"
+               AbsoluteLayout.LayoutBounds="0.5,0.65,0.6,-1"
+               AbsoluteLayout.LayoutFlags="PositionProportional,WidthProportional"
+               BackgroundColor="#CC1F2937" CornerRadius="22"
+               Padding="12,6" HasShadow="False" IsVisible="False">
+          <Label x:Name="RecognitionLabel" TextColor="White" FontSize="15" HorizontalOptions="Center" VerticalOptions="Center" BackgroundColor="Transparent"/>
+        </Frame>
+
+      </AbsoluteLayout>
+    </Grid>
+
+    <!-- BOTTOM BAR -->
+    <Grid Grid.Row="2" Padding="20,12" ColumnDefinitions="Auto,*,Auto" BackgroundColor="Transparent">
+      <ImageButton Source="icon_gallery.svg" BackgroundColor="Transparent" Clicked="OnGalleryClicked" WidthRequest="25" HeightRequest="25" HorizontalOptions="Start" VerticalOptions="Center"/>
+
+      <!-- центральная кнопка захвата -->
+      <Grid Grid.Column="1" HorizontalOptions="Center" VerticalOptions="Center" HeightRequest="70" WidthRequest="70" BackgroundColor="Transparent">
+        <Frame CornerRadius="44" BackgroundColor="Transparent" BorderColor="White" HasShadow="True">
+             <Button x:Name="ShutterButton" BackgroundColor="#F2F2F2" CornerRadius="30" HeightRequest="56" WidthRequest="56" Clicked="OnCaptureButtonClicked" HorizontalOptions="Fill" VerticalOptions="Fill"/>
+        </Frame>
+      </Grid>
+
+      <ImageButton x:Name="FlashButton"
+                   Grid.Column="2"
+                   Source="icon_flash_off.svg"
+                   BackgroundColor="Transparent"
+                   Clicked="OnFlashClicked"
+                   WidthRequest="28"
+                   HeightRequest="28"
+                   HorizontalOptions="End"
+                   VerticalOptions="Center"/>
+    </Grid>
+  </Grid>
+</ContentPage>

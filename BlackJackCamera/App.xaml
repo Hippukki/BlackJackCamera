@@ -1,0 +1,39 @@
+﻿<?xml version = "1.0" encoding = "UTF-8" ?>
+<Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:BlackJackCamera"
+             x:Class="BlackJackCamera.App">
+    <Application.Resources>
+        <ResourceDictionary>
+            <!-- Colors -->
+            <Color x:Key="Bg">#0B0B0C</Color>
+            <!-- фон -->
+            <Color x:Key="CardBg">#141417</Color>
+            <!-- карточки -->
+            <Color x:Key="Muted">#8E8E93</Color>
+            <!-- серый текст -->
+            <Color x:Key="White">#FFFFFF</Color>
+            <Color x:Key="Accent">#FF9B2B</Color>
+            <!-- оранжевый для кешбека -->
+            <Color x:Key="AccentDark">#E07E00</Color>
+            <Color x:Key="Handle">#2B2B2D</Color>
+            <!-- маленькая серо-черная ручка -->
+            <Color x:Key="TabBar">#050506</Color>
+            <Color x:Key="BadgeRed">#E53935</Color>
+
+            <!-- Styles -->
+            <Style x:Key="RoundedCard" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="{StaticResource CardBg}" />
+                <Setter Property="CornerRadius" Value="14" />
+                <Setter Property="HasShadow" Value="False" />
+                <Setter Property="Padding" Value="12" />
+            </Style>
+
+            <Style x:Key="SmallMutedLabel" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource Muted}" />
+                <Setter Property="FontSize" Value="13" />
+            </Style>
+
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

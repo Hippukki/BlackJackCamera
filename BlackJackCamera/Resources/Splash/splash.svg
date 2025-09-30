@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+  <g class="layer">
+    <title>Layer 1</title>
+    <path d="m-1,1l512,0l0,512l-512,0l0,-512z" fill="#EF3124" id="svg_1" transform="matrix(1 0 0 1 0 0)"/>
+    <g id="svg_4">
+      <text fill="white" font-family="Arial" font-size="320" font-weight="bold" id="svg_2" text-anchor="middle" transform="matrix(0.703706 0 0 0.698394 104.623 96.0893)" x="209.97875" y="305.27898">A</text>
+      <rect fill="white" height="35.61807" id="svg_3" width="163.22862" x="170.77138" y="349.38193"/>
+      <ellipse cx="251.04773" cy="157.46333" fill="white" id="svg_7" rx="18.73115" ry="19.55501"/>
+    </g>
+  </g>
+</svg>
+

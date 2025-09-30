@@ -1,0 +1,230 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="BlackJackCamera.MainPage"
+             BackgroundColor="{StaticResource Bg}"
+             NavigationPage.HasNavigationBar="False"
+             Padding="0">
+
+    <Grid RowDefinitions="Auto,*,Auto">
+        <!-- ====== HEADER ====== -->
+        <Grid Grid.Row="0" Padding="16,18,16,8" ColumnSpacing="12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Аватар -->
+            <Frame HeightRequest="44" WidthRequest="44" CornerRadius="22"
+             BackgroundColor="#222224" Padding="0" HasShadow="False" VerticalOptions="Center">
+                <Image Source="avatar.png" Aspect="AspectFill"/>
+            </Frame>
+
+            <!-- Имя и chevron -->
+            <StackLayout Grid.Column="1" Orientation="Horizontal" VerticalOptions="Center" Spacing="6">
+                <Label Text="Павел"
+               TextColor="{StaticResource White}"
+               FontSize="18"
+               FontAttributes="Bold"
+               VerticalOptions="Center"/>
+                <Label Text="›" TextColor="{StaticResource Muted}" VerticalOptions="Center" FontSize="18"/>
+            </StackLayout>
+
+            <!-- Кнопка кешбека -->
+            <Frame Grid.Column="2" CornerRadius="18" Padding="10,6" HasShadow="False" VerticalOptions="Center"
+             BackgroundColor="{StaticResource Accent}">
+                <Label Text="🍀  Кэшбэк x2" TextColor="Black" FontSize="14" FontAttributes="Bold"/>
+            </Frame>
+        </Grid>
+
+        <!-- ====== CONTENT (scroll) ====== -->
+        <ScrollView Grid.Row="1" >
+            <StackLayout Spacing="12" Padding="16,6,16,20">
+
+                <!-- Текущий счёт (card) -->
+                <Frame Style="{StaticResource RoundedCard}" Padding="0,12,0,0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="110"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <StackLayout Grid.Row="0" Padding="12,0,0,0">
+                            <Label Text="Текущий зарплатный счёт" Style="{StaticResource SmallMutedLabel}" />
+                            <Label Text="9,17 ₽" TextColor="{StaticResource White}" FontSize="22" FontAttributes="Bold" />
+                            <BoxView HeightRequest="6" Opacity="0"/>
+                        </StackLayout>
+
+                        <Frame Grid.Row="1" Grid.ColumnSpan="2" BackgroundColor="#1B1B1C" CornerRadius="12" Padding="10,10" Margin="0,10,0,0" HasShadow="False">
+                            <Label Text="Получайте кэшбэк за оплату с Alfa Pay" TextColor="{StaticResource White}" FontSize="13"/>
+                        </Frame>
+
+                        <!-- маленькая карточка справа -->
+                        <Grid Grid.Column="1" HorizontalOptions="End" VerticalOptions="Start" Padding="0,0,12,0">
+                            <Border BackgroundColor="#E53935" HeightRequest="54" WidthRequest="88" HorizontalOptions="End">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="10"/>
+                                </Border.StrokeShape>
+                                <Grid>
+                                    <Grid RowDefinitions="Auto,* ,Auto"
+                                          ColumnDefinitions="*,*">
+
+                                            <!-- буква А -->
+                                            <Label Text="A"
+                                                   TextColor="Black"
+                                                   FontSize="12"
+                                                   FontAttributes="Bold"
+                                                   HorizontalOptions="Start"
+                                                   VerticalOptions="Start"
+                                                   Margin="3,0,0,0"
+                                                   Grid.Row="0"
+                                                   Grid.Column="0"/>
+
+                                            <!-- цифры снизу слева -->
+                                            <Label Text="6475"
+                                                   TextColor="White"
+                                                   FontSize="14"
+                                                   HorizontalOptions="Start"
+                                                   VerticalOptions="End"
+                                                   Margin="7,0,0,2"
+                                                   Grid.Row="2"
+                                                   Grid.Column="0"/>
+
+                                            <!-- надпись МИР снизу справа -->
+                                            <Label Text="МИР"
+                                                   TextColor="Black"
+                                                   FontSize="10"
+                                                   HorizontalOptions="End"
+                                                   VerticalOptions="End"
+                                                   FontAttributes="Bold"
+                                                   Margin="0,0,3,0"
+                                                   Grid.Row="2"
+                                                   Grid.Column="1"/>
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </Grid>
+                </Frame>
+
+                <!-- Цифровые финансовые активы -->
+                <Frame Style="{StaticResource RoundedCard}">
+                    <StackLayout>
+                        <Label Text="Цифровые финансовые активы" Style="{StaticResource SmallMutedLabel}"/>
+                        <Label Text="0 ₽" TextColor="{StaticResource White}" FontSize="22" FontAttributes="Bold"/>
+                    </StackLayout>
+                </Frame>
+
+                <!-- Альфа-Счёт -->
+                <Frame Style="{StaticResource RoundedCard}" Padding="0,12,0,0">
+                    <StackLayout>
+                        <Label Text="Альфа-Счёт" Style="{StaticResource SmallMutedLabel}" Padding="12,0,12,0"/>
+                        <Label Text="До 16% годовых" TextColor="{StaticResource White}" FontSize="22" Padding="12,0,12,0" FontAttributes="Bold"/>
+                        <Frame BackgroundColor="#283449" CornerRadius="10" Padding="10" HasShadow="False" Margin="0,8,0,0">
+                            <Label Text="Копите на ваших условиях" TextColor="{StaticResource White}" FontSize="14"/>
+                        </Frame>
+                    </StackLayout>
+                </Frame>
+
+                <!-- маленькая рукоятка (см. скрин) -->
+                <Grid HorizontalOptions="Center" Margin="0,2,0,0">
+                    <Frame BackgroundColor="{StaticResource Handle}" CornerRadius="8" HeightRequest="6" WidthRequest="110" Padding="0" HasShadow="False"/>
+                </Grid>
+
+                <!-- Поиск + сканер -->
+                <Grid ColumnDefinitions="*,Auto" VerticalOptions="Center" Margin="0,2,0,0">
+                    <Frame CornerRadius="24" HasShadow="False" BackgroundColor="#1B1B1C" Padding="10,0,0,0" HorizontalOptions="FillAndExpand">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <ImageButton Source="search.png" HeightRequest="30" WidthRequest="35" VerticalOptions="Center"/>
+                            <Label Grid.Column="1" Text="Поиск" FontSize="15" Margin="5,0,0,0" TextColor="{StaticResource Muted}" VerticalOptions="Center"/>
+                        </Grid>
+                    </Frame>
+
+                    <!-- Сканер справа -->
+                    <Frame Grid.Column="1" Margin="8,0,0,0" CornerRadius="12" BackgroundColor="#222224" Padding="5" WidthRequest="45" HeightRequest="45" HasShadow="False">
+                        <ImageButton Source="scanner.png" BackgroundColor="Transparent" Clicked="OnScanClicked" />
+                    </Frame>
+                </Grid>
+
+                <!-- Промо/баннер строка -->
+                <Label Text="+1 категория кэшбэка 5% бесплатно на 1 месяц" TextColor="{StaticResource White}" FontSize="16" Margin="0,10,0,0"/>
+
+                <!-- Карточки-ролик (псевдо) -->
+                <ScrollView Orientation="Horizontal" HeightRequest="230">
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Frame BackgroundColor="Transparent" Padding="0" WidthRequest="200" CornerRadius="12" HasShadow="False">
+                            <ImageButton Aspect="Fill" Source="b1.png" BackgroundColor="Transparent"/>
+                        </Frame>
+                        <Frame BackgroundColor="Transparent" Padding="7,7,7,7" WidthRequest="200" CornerRadius="12" HasShadow="False">
+                            <ImageButton Aspect="Fill" Source="b2.png" BackgroundColor="Transparent"/>
+                        </Frame>
+                        <Frame BackgroundColor="Transparent" Padding="0,0,8,6" WidthRequest="200" CornerRadius="12" HasShadow="False">
+                            <ImageButton Aspect="Fill" Source="b3.png" BackgroundColor="Transparent"/>
+                        </Frame>
+                    </StackLayout>
+                </ScrollView>
+
+            </StackLayout>
+        </ScrollView>
+
+        <!-- ====== BOTTOM TAB BAR ====== -->
+        <Grid Grid.Row="2" HeightRequest="70" BackgroundColor="{StaticResource TabBar}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Home -->
+            <StackLayout Grid.Column="0" VerticalOptions="Center" HorizontalOptions="Center" Spacing="2">
+                <Image Source="main_menu.png" HeightRequest="38" WidthRequest="38" />
+                <Label Text="Главный" FontSize="12" TextColor="{StaticResource White}" />
+            </StackLayout>
+
+            <!-- Платежи -->
+            <StackLayout Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Center" Spacing="2">
+                <Image Source="payment.png" HeightRequest="38" WidthRequest="38" />
+                <Label Text="Платежи" FontSize="12" TextColor="#9A9A9A" />
+            </StackLayout>
+
+            <!-- Сердце -->
+            <StackLayout Grid.Column="2" Padding="2" HorizontalOptions="Center" VerticalOptions="Center">
+                <Image Source="heart.png" Aspect="Fill" />
+            </StackLayout>
+
+            <!-- История -->
+            <StackLayout Grid.Column="3" VerticalOptions="Center" HorizontalOptions="Center" Spacing="2">
+                <Image Source="history.png" HeightRequest="38" WidthRequest="38" />
+                <Label Text="История" FontSize="12" TextColor="#9A9A9A" />
+            </StackLayout>
+
+            <!-- Чаты с бейджем -->
+            <Grid Grid.Column="4" VerticalOptions="Center" HorizontalOptions="Center">
+                <StackLayout Spacing="2" HorizontalOptions="Center">
+                    <Image Source="chats.png" HeightRequest="38" WidthRequest="38" />
+                    <Label Text="Чаты" FontSize="12" TextColor="#9A9A9A" />
+                </StackLayout>
+
+                <!-- badge -->
+                <Frame BackgroundColor="{StaticResource BadgeRed}" CornerRadius="10" Padding="4,2" HeightRequest="22" MinimumHeightRequest="30"
+                       HorizontalOptions="End" VerticalOptions="Start" Margin="24,-8,0,0" HasShadow="False">
+                    <Label Text="99+" TextColor="White" FontSize="12" HorizontalOptions="Center" VerticalOptions="Center"/>
+                </Frame>
+            </Grid>
+        </Grid>
+    </Grid>
+
+</ContentPage>
