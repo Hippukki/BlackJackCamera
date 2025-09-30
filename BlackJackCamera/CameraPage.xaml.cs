@@ -191,6 +191,7 @@ namespace BlackJackCamera
         /// <param name="badges">Список бейджей для отображения</param>
         private async void ShowBadges(List<CategoryBadgeMapper.Badge> badges)
         {
+            System.Diagnostics.Debug.WriteLine($"[DEBUG] ShowBadges called with {badges.Count} badges");
             BadgesContainer.Children.Clear();
 
             foreach (var badge in badges)
@@ -270,11 +271,21 @@ namespace BlackJackCamera
             }
 
             // Показываем Bottom Sheet с анимацией
+            System.Diagnostics.Debug.WriteLine("[DEBUG] Setting BottomSheet.IsVisible = true");
             BottomSheet.IsVisible = true;
+            BottomSheet.TranslationY = 1000; // Убеждаемся что панель внизу
             ShutterButton.IsEnabled = false;
 
+            System.Diagnostics.Debug.WriteLine($"[DEBUG] BottomSheet TranslationY before animation: {BottomSheet.TranslationY}");
+            System.Diagnostics.Debug.WriteLine($"[DEBUG] BottomSheet Height: {BottomSheet.Height}");
+
+            // Небольшая задержка для корректной инициализации
+            await Task.Delay(50);
+
             // Анимация выдвижения снизу вверх
-            await BottomSheet.TranslateTo(0, 0, 300, Easing.CubicOut);
+            System.Diagnostics.Debug.WriteLine("[DEBUG] Starting animation TranslateTo(0, 0)");
+            await BottomSheet.TranslateTo(0, 0, 400, Easing.CubicOut);
+            System.Diagnostics.Debug.WriteLine($"[DEBUG] Animation finished. TranslationY: {BottomSheet.TranslationY}");
         }
 
         /// <summary>
