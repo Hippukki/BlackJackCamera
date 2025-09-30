@@ -61,6 +61,11 @@
       </Border.Shadow>
 
       <Grid RowDefinitions="Auto,Auto,Auto" Padding="0">
+        <!-- Gesture recognizer для свайпа вниз -->
+        <Grid.GestureRecognizers>
+          <SwipeGestureRecognizer Direction="Down" Swiped="OnBottomSheetSwipedDown"/>
+        </Grid.GestureRecognizers>
+
         <!-- Полоска для захвата (Handle) -->
         <BoxView Grid.Row="0"
                  WidthRequest="40"
@@ -86,12 +91,6 @@
                     AlignItems="Start"
                     AlignContent="Start"
                     Padding="16,0,16,24"/>
-      </Grid>
-
-        <!-- Gesture recognizer для свайпа вниз -->
-        <Grid.GestureRecognizers>
-          <SwipeGestureRecognizer Direction="Down" Swiped="OnBottomSheetSwipedDown"/>
-        </Grid.GestureRecognizers>
       </Grid>
     </Border>
 
