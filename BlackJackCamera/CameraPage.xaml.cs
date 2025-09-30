@@ -202,12 +202,12 @@ namespace BlackJackCamera
             if (_isFlashOn)
             {
                 cameraView.CameraFlashMode = CameraFlashMode.On;
-                FlashButton.Source = "icon_flash_on.svg";
+                FlashButton.Source = "CameraPage/icon_flash_on.svg";
             }
             else
             {
                 cameraView.CameraFlashMode = CameraFlashMode.Off;
-                FlashButton.Source = "icon_flash_off.svg";
+                FlashButton.Source = "CameraPage/icon_flash_off.svg";
             }
         }
 

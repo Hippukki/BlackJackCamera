@@ -146,14 +146,14 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <ImageButton Source="search.png" HeightRequest="30" WidthRequest="35" VerticalOptions="Center"/>
+                            <ImageButton Source="MainPage/search.png" HeightRequest="30" WidthRequest="35" VerticalOptions="Center"/>
                             <Label Grid.Column="1" Text="Поиск" FontSize="15" Margin="5,0,0,0" TextColor="{StaticResource Muted}" VerticalOptions="Center"/>
                         </Grid>
                     </Frame>
 
                     <!-- Сканер справа -->
                     <Frame Grid.Column="1" Margin="8,0,0,0" CornerRadius="12" BackgroundColor="#222224" Padding="5" WidthRequest="45" HeightRequest="45" HasShadow="False">
-                        <ImageButton Source="scanner.png" BackgroundColor="Transparent" Clicked="OnScanClicked" />
+                        <ImageButton Source="MainPage/scanner.png" BackgroundColor="Transparent" Clicked="OnScanClicked" />
                     </Frame>
                 </Grid>
 
@@ -164,13 +164,13 @@
                 <ScrollView Orientation="Horizontal" HeightRequest="230">
                     <StackLayout Orientation="Horizontal" Spacing="12">
                         <Frame BackgroundColor="Transparent" Padding="0" WidthRequest="200" CornerRadius="12" HasShadow="False">
-                            <ImageButton Aspect="Fill" Source="b1.png" BackgroundColor="Transparent"/>
+                            <ImageButton Aspect="Fill" Source="MainPage/b1.png" BackgroundColor="Transparent"/>
                         </Frame>
                         <Frame BackgroundColor="Transparent" Padding="7,7,7,7" WidthRequest="200" CornerRadius="12" HasShadow="False">
-                            <ImageButton Aspect="Fill" Source="b2.png" BackgroundColor="Transparent"/>
+                            <ImageButton Aspect="Fill" Source="MainPage/b2.png" BackgroundColor="Transparent"/>
                         </Frame>
                         <Frame BackgroundColor="Transparent" Padding="0,0,8,6" WidthRequest="200" CornerRadius="12" HasShadow="False">
-                            <ImageButton Aspect="Fill" Source="b3.png" BackgroundColor="Transparent"/>
+                            <ImageButton Aspect="Fill" Source="MainPage/b3.png" BackgroundColor="Transparent"/>
                         </Frame>
                     </StackLayout>
                 </ScrollView>
@@ -190,31 +190,31 @@
 
             <!-- Home -->
             <StackLayout Grid.Column="0" VerticalOptions="Center" HorizontalOptions="Center" Spacing="2">
-                <Image Source="main_menu.png" HeightRequest="38" WidthRequest="38" />
+                <Image Source="MainPage/main_menu.png" HeightRequest="38" WidthRequest="38" />
                 <Label Text="Главный" FontSize="12" TextColor="{StaticResource White}" />
             </StackLayout>
 
             <!-- Платежи -->
             <StackLayout Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Center" Spacing="2">
-                <Image Source="payment.png" HeightRequest="38" WidthRequest="38" />
+                <Image Source="MainPage/payment.png" HeightRequest="38" WidthRequest="38" />
                 <Label Text="Платежи" FontSize="12" TextColor="#9A9A9A" />
             </StackLayout>
 
             <!-- Сердце -->
             <StackLayout Grid.Column="2" Padding="2" HorizontalOptions="Center" VerticalOptions="Center">
-                <Image Source="heart.png" Aspect="Fill" />
+                <Image Source="MainPage/heart.png" Aspect="Fill" />
             </StackLayout>
 
             <!-- История -->
             <StackLayout Grid.Column="3" VerticalOptions="Center" HorizontalOptions="Center" Spacing="2">
-                <Image Source="history.png" HeightRequest="38" WidthRequest="38" />
+                <Image Source="MainPage/history.png" HeightRequest="38" WidthRequest="38" />
                 <Label Text="История" FontSize="12" TextColor="#9A9A9A" />
             </StackLayout>
 
             <!-- Чаты с бейджем -->
             <Grid Grid.Column="4" VerticalOptions="Center" HorizontalOptions="Center">
                 <StackLayout Spacing="2" HorizontalOptions="Center">
-                    <Image Source="chats.png" HeightRequest="38" WidthRequest="38" />
+                    <Image Source="MainPage/chats.png" HeightRequest="38" WidthRequest="38" />
                     <Label Text="Чаты" FontSize="12" TextColor="#9A9A9A" />
                 </StackLayout>
 

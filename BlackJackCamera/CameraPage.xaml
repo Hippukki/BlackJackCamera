@@ -54,9 +54,9 @@
 
     <!-- TOP BAR -->
     <Grid Grid.Row="0" Padding="16,12,16,8" ColumnDefinitions="Auto,*,Auto" BackgroundColor="Transparent">
-      <ImageButton Source="icon_back.svg" BackgroundColor="Transparent" Clicked="OnBackClicked" WidthRequest="28" HeightRequest="28"/>
+      <ImageButton Source="CameraPage/icon_back.svg" BackgroundColor="Transparent" Clicked="OnBackClicked" WidthRequest="28" HeightRequest="28"/>
       <Label Grid.Column="1" Text="Умная камера" HorizontalOptions="Center" VerticalOptions="Center" TextColor="White" FontSize="18" FontAttributes="Bold" BackgroundColor="Transparent"/>
-      <ImageButton Grid.Column="2" Source="icon_info.svg" BackgroundColor="Transparent" Clicked="OnInfoClicked" WidthRequest="28" HeightRequest="28"/>
+      <ImageButton Grid.Column="2" Source="CameraPage/icon_info.svg" BackgroundColor="Transparent" Clicked="OnInfoClicked" WidthRequest="28" HeightRequest="28"/>
     </Grid>
 
     <!-- OVERLAYS -->
@@ -66,10 +66,10 @@
       <AbsoluteLayout>
 
         <!-- угловые элементы (вырезанные PNG) -->
-        <Image Source="corner_tl.svg" AbsoluteLayout.LayoutBounds="0.06,0.08,72,72" AbsoluteLayout.LayoutFlags="PositionProportional"/>
-        <Image Source="corner_tr.svg" AbsoluteLayout.LayoutBounds="0.94,0.08,72,72" AbsoluteLayout.LayoutFlags="PositionProportional"/>
-        <Image Source="corner_bl.svg" AbsoluteLayout.LayoutBounds="0.06,0.92,72,72" AbsoluteLayout.LayoutFlags="PositionProportional"/>
-        <Image Source="corner_br.svg" AbsoluteLayout.LayoutBounds="0.94,0.92,72,72" AbsoluteLayout.LayoutFlags="PositionProportional"/>
+        <Image Source="CameraPage/corner_tl.svg" AbsoluteLayout.LayoutBounds="0.06,0.08,72,72" AbsoluteLayout.LayoutFlags="PositionProportional"/>
+        <Image Source="CameraPage/corner_tr.svg" AbsoluteLayout.LayoutBounds="0.94,0.08,72,72" AbsoluteLayout.LayoutFlags="PositionProportional"/>
+        <Image Source="CameraPage/corner_bl.svg" AbsoluteLayout.LayoutBounds="0.06,0.92,72,72" AbsoluteLayout.LayoutFlags="PositionProportional"/>
+        <Image Source="CameraPage/corner_br.svg" AbsoluteLayout.LayoutBounds="0.94,0.92,72,72" AbsoluteLayout.LayoutFlags="PositionProportional"/>
 
         <!-- подсказка (внизу поверх preview) -->
         <Frame x:Name="HintPill"
@@ -105,7 +105,7 @@
 
     <!-- BOTTOM BAR -->
     <Grid Grid.Row="2" Padding="20,12" ColumnDefinitions="Auto,*,Auto" BackgroundColor="Transparent">
-      <ImageButton Source="icon_gallery.svg" BackgroundColor="Transparent" Clicked="OnGalleryClicked" WidthRequest="25" HeightRequest="25" HorizontalOptions="Start" VerticalOptions="Center"/>
+      <ImageButton Source="CameraPage/icon_gallery.svg" BackgroundColor="Transparent" Clicked="OnGalleryClicked" WidthRequest="25" HeightRequest="25" HorizontalOptions="Start" VerticalOptions="Center"/>
 
       <!-- центральная кнопка захвата -->
       <Grid Grid.Column="1" HorizontalOptions="Center" VerticalOptions="Center" HeightRequest="70" WidthRequest="70" BackgroundColor="Transparent">
@@ -116,7 +116,7 @@
 
       <ImageButton x:Name="FlashButton"
                    Grid.Column="2"
-                   Source="icon_flash_off.svg"
+                   Source="CameraPage/icon_flash_off.svg"
                    BackgroundColor="Transparent"
                    Clicked="OnFlashClicked"
                    WidthRequest="28"
