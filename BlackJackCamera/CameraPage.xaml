@@ -32,9 +32,9 @@
             BackgroundColor="Transparent">
       <Border.Background>
         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#A0000000" Offset="0.0" />
-          <GradientStop Color="#90111111" Offset="0.5" />
-          <GradientStop Color="#A0000000" Offset="1.0" />
+          <GradientStop Color="#70000000" Offset="0.0" />
+          <GradientStop Color="#60222222" Offset="0.5" />
+          <GradientStop Color="#70000000" Offset="1.0" />
         </LinearGradientBrush>
       </Border.Background>
       <Border.StrokeShape>
