@@ -45,55 +45,6 @@
       </Border.GestureRecognizers>
     </Border>
 
-    <!-- Bottom Sheet с бейджами -->
-    <Border x:Name="BottomSheet"
-            Grid.RowSpan="3"
-            BackgroundColor="#0B0B0C"
-            VerticalOptions="End"
-            HorizontalOptions="Fill"
-            Margin="-1,0,-1,0"
-            IsVisible="False">
-      <Border.StrokeShape>
-        <RoundRectangle CornerRadius="16,16,0,0"/>
-      </Border.StrokeShape>
-      <Border.Shadow>
-        <Shadow Brush="Black" Offset="0,-4" Radius="20" Opacity="0.5"/>
-      </Border.Shadow>
-
-      <Grid RowDefinitions="Auto,Auto,Auto" Padding="0">
-        <!-- Gesture recognizer для свайпа вниз -->
-        <Grid.GestureRecognizers>
-          <SwipeGestureRecognizer Direction="Down" Swiped="OnBottomSheetSwipedDown"/>
-        </Grid.GestureRecognizers>
-
-        <!-- Полоска для захвата (Handle) -->
-        <BoxView Grid.Row="0"
-                 WidthRequest="40"
-                 HeightRequest="4"
-                 BackgroundColor="#444444"
-                 CornerRadius="2"
-                 Margin="0,12,0,8"
-                 HorizontalOptions="Center"/>
-
-        <!-- Серая разделительная линия -->
-        <BoxView Grid.Row="1"
-                 HeightRequest="1"
-                 BackgroundColor="#333333"
-                 HorizontalOptions="Fill"
-                 Margin="0,0,0,16"/>
-
-        <!-- Контейнер с бейджами (без ScrollView, чтобы подстраивался под контент) -->
-        <FlexLayout Grid.Row="2"
-                    x:Name="BadgesContainer"
-                    Direction="Row"
-                    Wrap="Wrap"
-                    JustifyContent="Start"
-                    AlignItems="Start"
-                    AlignContent="Start"
-                    Padding="16,0,16,24"/>
-      </Grid>
-    </Border>
-
     <ActivityIndicator x:Name="LoadingIndicator"
                       Grid.RowSpan="3"
                       HorizontalOptions="Center"
@@ -176,5 +127,55 @@
                    HorizontalOptions="End"
                    VerticalOptions="Center"/>
     </Grid>
+
+    <!-- Bottom Sheet с бейджами (в конце, чтобы рисовался поверх всех элементов) -->
+    <Border x:Name="BottomSheet"
+            Grid.RowSpan="3"
+            BackgroundColor="#0B0B0C"
+            VerticalOptions="End"
+            HorizontalOptions="Fill"
+            Margin="-1,0,-1,0"
+            IsVisible="False">
+      <Border.StrokeShape>
+        <RoundRectangle CornerRadius="16,16,0,0"/>
+      </Border.StrokeShape>
+      <Border.Shadow>
+        <Shadow Brush="Black" Offset="0,-4" Radius="20" Opacity="0.5"/>
+      </Border.Shadow>
+
+      <Grid RowDefinitions="Auto,Auto,Auto" Padding="0">
+        <!-- Gesture recognizer для свайпа вниз -->
+        <Grid.GestureRecognizers>
+          <SwipeGestureRecognizer Direction="Down" Swiped="OnBottomSheetSwipedDown"/>
+        </Grid.GestureRecognizers>
+
+        <!-- Полоска для захвата (Handle) -->
+        <BoxView Grid.Row="0"
+                 WidthRequest="40"
+                 HeightRequest="4"
+                 BackgroundColor="#444444"
+                 CornerRadius="2"
+                 Margin="0,12,0,8"
+                 HorizontalOptions="Center"/>
+
+        <!-- Серая разделительная линия -->
+        <BoxView Grid.Row="1"
+                 HeightRequest="1"
+                 BackgroundColor="#333333"
+                 HorizontalOptions="Fill"
+                 Margin="0,0,0,16"/>
+
+        <!-- Контейнер с бейджами (без ScrollView, чтобы подстраивался под контент) -->
+        <FlexLayout Grid.Row="2"
+                    x:Name="BadgesContainer"
+                    Direction="Row"
+                    Wrap="Wrap"
+                    JustifyContent="Start"
+                    AlignItems="Start"
+                    AlignContent="Start"
+                    Padding="16,0,16,24"/>
+      </Grid>
+    </Border>
+
   </Grid>
 </ContentPage>
