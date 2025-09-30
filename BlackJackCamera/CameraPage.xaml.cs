@@ -133,33 +133,15 @@ namespace BlackJackCamera
         /// <param name="stream">Поток с изображением</param>
         private void ProcessPhoto(Stream stream)
         {
-            try
+            var bitmap = _imageProcessor.ResizeImage(stream, 640, 640);
+            var tensor = _imageProcessor.ConvertToTensor(bitmap);
+
+            var detections = _detectionService.DetectObjects(tensor);
+
+            MainThread.BeginInvokeOnMainThread(() =>
             {
-                var bitmap = _imageProcessor.ResizeImage(stream, 640, 640);
-                System.Diagnostics.Debug.WriteLine($"[DEBUG] Bitmap размер: {bitmap.Width}x{bitmap.Height}");
-
-                var tensor = _imageProcessor.ConvertToTensor(bitmap);
-                System.Diagnostics.Debug.WriteLine($"[DEBUG] Tensor dimensions: [{string.Join(", ", tensor.Dimensions.ToArray())}]");
-
-                var detections = _detectionService.DetectObjects(tensor);
-                System.Diagnostics.Debug.WriteLine($"[DEBUG] Detections count: {detections.Count}");
-
-                MainThread.BeginInvokeOnMainThread(() =>
-                {
-                    DisplayDetectionResults(detections);
-                });
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"[ERROR] ProcessPhoto: {ex.Message}");
-                System.Diagnostics.Debug.WriteLine($"[ERROR] StackTrace: {ex.StackTrace}");
-
-                MainThread.BeginInvokeOnMainThread(async () =>
-                {
-                    HideLoadingUI();
-                    await DisplayAlert("Ошибка обработки", ex.Message, "OK");
-                });
-            }
+                DisplayDetectionResults(detections);
+            });
         }
 
         /// <summary>
