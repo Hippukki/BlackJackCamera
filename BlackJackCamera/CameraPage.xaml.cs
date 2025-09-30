@@ -273,14 +273,17 @@ namespace BlackJackCamera
             // Показываем Bottom Sheet с анимацией
             System.Diagnostics.Debug.WriteLine("[DEBUG] Setting BottomSheet.IsVisible = true");
             BottomSheet.IsVisible = true;
-            BottomSheet.TranslationY = 1000; // Убеждаемся что панель внизу
             ShutterButton.IsEnabled = false;
 
-            System.Diagnostics.Debug.WriteLine($"[DEBUG] BottomSheet TranslationY before animation: {BottomSheet.TranslationY}");
-            System.Diagnostics.Debug.WriteLine($"[DEBUG] BottomSheet Height: {BottomSheet.Height}");
+            // Сначала устанавливаем начальное положение (за экраном)
+            BottomSheet.TranslationY = 800;
+            System.Diagnostics.Debug.WriteLine($"[DEBUG] Initial TranslationY: {BottomSheet.TranslationY}");
 
-            // Небольшая задержка для корректной инициализации
-            await Task.Delay(50);
+            // Даем время для отрисовки элементов
+            await Task.Delay(100);
+
+            System.Diagnostics.Debug.WriteLine($"[DEBUG] BottomSheet bounds: {BottomSheet.Bounds}");
+            System.Diagnostics.Debug.WriteLine($"[DEBUG] BottomSheet Height: {BottomSheet.Height}");
 
             // Анимация выдвижения снизу вверх
             System.Diagnostics.Debug.WriteLine("[DEBUG] Starting animation TranslateTo(0, 0)");
@@ -313,7 +316,7 @@ namespace BlackJackCamera
                 return;
 
             // Анимация скрытия вниз
-            await BottomSheet.TranslateTo(0, 1000, 300, Easing.CubicIn);
+            await BottomSheet.TranslateTo(0, 800, 300, Easing.CubicIn);
 
             // Скрываем все элементы
             HideLoadingUI();
@@ -334,7 +337,7 @@ namespace BlackJackCamera
             LoadingIndicator.IsVisible = false;
             LoadingIndicator.IsRunning = false;
             BottomSheet.IsVisible = false;
-            BottomSheet.TranslationY = 1000; // Сбрасываем позицию для следующей анимации
+            BottomSheet.TranslationY = 800; // Сбрасываем позицию для следующей анимации
             BadgesContainer.Children.Clear();
             ShutterButton.IsEnabled = true;
         }

@@ -51,7 +51,6 @@
             BackgroundColor="#0B0B0C"
             VerticalOptions="End"
             HorizontalOptions="Fill"
-            TranslationY="1000"
             IsVisible="False">
       <Border.StrokeShape>
         <RoundRectangle CornerRadius="16,16,0,0"/>
