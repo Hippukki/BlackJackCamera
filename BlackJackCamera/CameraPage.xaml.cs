@@ -186,10 +186,10 @@ namespace BlackJackCamera
         }
 
         /// <summary>
-        /// Отображает бейджи на экране
+        /// Отображает бейджи на экране с анимацией Bottom Sheet
         /// </summary>
         /// <param name="badges">Список бейджей для отображения</param>
-        private void ShowBadges(List<CategoryBadgeMapper.Badge> badges)
+        private async void ShowBadges(List<CategoryBadgeMapper.Badge> badges)
         {
             BadgesContainer.Children.Clear();
 
@@ -200,9 +200,9 @@ namespace BlackJackCamera
                     CornerRadius = 21,
                     Padding = new Thickness(12, 6),
                     HasShadow = false,
-                    Margin = new Thickness(4, 4),
+                    Margin = new Thickness(4, 3),
                     HorizontalOptions = LayoutOptions.Start,
-                    Opacity = 0.9 // Небольшая прозрачность
+                    Opacity = 0.9
                 };
 
                 // Определяем градиент в зависимости от типа бейджа
@@ -211,44 +211,41 @@ namespace BlackJackCamera
                 switch (badge.Type)
                 {
                     case CategoryBadgeMapper.BadgeType.Primary:
-                        // Сине-фиолетовый градиент для основных услуг
                         gradient = new LinearGradientBrush
                         {
                             StartPoint = new Point(0, 0),
                             EndPoint = new Point(1, 0),
                             GradientStops = new GradientStopCollection
                             {
-                                new GradientStop { Color = Color.FromArgb("#4A5FD9"), Offset = 0.0f }, // Синий
-                                new GradientStop { Color = Color.FromArgb("#8B5CF6"), Offset = 1.0f }  // Фиолетовый
+                                new GradientStop { Color = Color.FromArgb("#4A5FD9"), Offset = 0.0f },
+                                new GradientStop { Color = Color.FromArgb("#8B5CF6"), Offset = 1.0f }
                             }
                         };
                         break;
 
                     case CategoryBadgeMapper.BadgeType.Discount:
-                        // Красный → прозрачный для скидок
                         gradient = new LinearGradientBrush
                         {
                             StartPoint = new Point(0, 0),
                             EndPoint = new Point(1, 0),
                             GradientStops = new GradientStopCollection
                             {
-                                new GradientStop { Color = Color.FromArgb("#EF4444"), Offset = 0.0f }, // Красный
-                                new GradientStop { Color = Color.FromArgb("#50EF4444"), Offset = 1.0f } // Прозрачный красный
+                                new GradientStop { Color = Color.FromArgb("#EF4444"), Offset = 0.0f },
+                                new GradientStop { Color = Color.FromArgb("#50EF4444"), Offset = 1.0f }
                             }
                         };
                         break;
 
                     case CategoryBadgeMapper.BadgeType.Secondary:
                     default:
-                        // Голубой → бирюзовый для остальных услуг
                         gradient = new LinearGradientBrush
                         {
                             StartPoint = new Point(0, 0),
                             EndPoint = new Point(1, 0),
                             GradientStops = new GradientStopCollection
                             {
-                                new GradientStop { Color = Color.FromArgb("#06B6D4"), Offset = 0.0f }, // Голубой
-                                new GradientStop { Color = Color.FromArgb("#14B8A6"), Offset = 1.0f }  // Бирюзовый
+                                new GradientStop { Color = Color.FromArgb("#06B6D4"), Offset = 0.0f },
+                                new GradientStop { Color = Color.FromArgb("#14B8A6"), Offset = 1.0f }
                             }
                         };
                         break;
@@ -260,7 +257,7 @@ namespace BlackJackCamera
                 {
                     Text = badge.Text,
                     TextColor = Colors.White,
-                    FontSize = 20,
+                    FontSize = 16,
                     HorizontalOptions = LayoutOptions.Center,
                     VerticalOptions = LayoutOptions.Center,
                     HorizontalTextAlignment = TextAlignment.Center,
@@ -272,16 +269,42 @@ namespace BlackJackCamera
                 BadgesContainer.Children.Add(frame);
             }
 
-            // Показываем бейджи
-            BadgesScrollView.IsVisible = true;
+            // Показываем Bottom Sheet с анимацией
+            BottomSheet.IsVisible = true;
             ShutterButton.IsEnabled = false;
+
+            // Анимация выдвижения снизу вверх
+            await BottomSheet.TranslateTo(0, 0, 300, Easing.CubicOut);
         }
 
         /// <summary>
-        /// Обработчик нажатия на затемнённую область - скрывает бейджи
+        /// Обработчик нажатия на затемнённую область - скрывает панель с бейджами
         /// </summary>
-        private void OnOverlayTapped(object sender, EventArgs e)
+        private async void OnOverlayTapped(object sender, EventArgs e)
         {
+            await HideBottomSheet();
+        }
+
+        /// <summary>
+        /// Обработчик свайпа вниз - скрывает панель с бейджами
+        /// </summary>
+        private async void OnBottomSheetSwipedDown(object sender, SwipedEventArgs e)
+        {
+            await HideBottomSheet();
+        }
+
+        /// <summary>
+        /// Скрывает Bottom Sheet с анимацией
+        /// </summary>
+        private async Task HideBottomSheet()
+        {
+            if (!BottomSheet.IsVisible)
+                return;
+
+            // Анимация скрытия вниз
+            await BottomSheet.TranslateTo(0, 1000, 300, Easing.CubicIn);
+
+            // Скрываем все элементы
             HideLoadingUI();
         }
 
@@ -299,7 +322,8 @@ namespace BlackJackCamera
             DarkOverlay.IsVisible = false;
             LoadingIndicator.IsVisible = false;
             LoadingIndicator.IsRunning = false;
-            BadgesScrollView.IsVisible = false;
+            BottomSheet.IsVisible = false;
+            BottomSheet.TranslationY = 1000; // Сбрасываем позицию для следующей анимации
             BadgesContainer.Children.Clear();
             ShutterButton.IsEnabled = true;
         }
