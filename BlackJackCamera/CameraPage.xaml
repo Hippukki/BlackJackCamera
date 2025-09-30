@@ -32,9 +32,9 @@
             BackgroundColor="Transparent">
       <Border.Background>
         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#70000000" Offset="0.0" />
-          <GradientStop Color="#60222222" Offset="0.5" />
-          <GradientStop Color="#70000000" Offset="1.0" />
+          <GradientStop Color="#A0000000" Offset="0.0" />
+          <GradientStop Color="#90111111" Offset="0.5" />
+          <GradientStop Color="#A0000000" Offset="1.0" />
         </LinearGradientBrush>
       </Border.Background>
       <Border.StrokeShape>
@@ -48,15 +48,16 @@
     <!-- FlexLayout с бейджами -->
     <ScrollView x:Name="BadgesScrollView"
                 Grid.RowSpan="3"
-                HorizontalOptions="Center"
+                HorizontalOptions="Start"
                 VerticalOptions="Center"
                 IsVisible="False"
                 Margin="20,0"
-                MaximumHeightRequest="600">
+                MaximumHeightRequest="600"
+                MaximumWidthRequest="600">
       <FlexLayout x:Name="BadgesContainer"
                   Direction="Row"
                   Wrap="Wrap"
-                  JustifyContent="Center"
+                  JustifyContent="Start"
                   AlignItems="Start"
                   AlignContent="Start"
                   Margin="0,100,0,100"/>

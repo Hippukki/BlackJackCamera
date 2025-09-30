@@ -6,97 +6,156 @@ namespace BlackJackCamera.Services
     public static class CategoryBadgeMapper
     {
         /// <summary>
+        /// Типы бейджей для определения стиля
+        /// </summary>
+        public enum BadgeType
+        {
+            Primary,   // Основные услуги (сине-фиолетовый)
+            Secondary, // Остальные услуги (голубой → бирюзовый)
+            Discount   // Скидки (красный → прозрачный)
+        }
+
+        /// <summary>
+        /// Класс для хранения бейджа с типом
+        /// </summary>
+        public class Badge
+        {
+            public string Text { get; set; }
+            public BadgeType Type { get; set; }
+
+            public Badge(string text, BadgeType type = BadgeType.Secondary)
+            {
+                Text = text;
+                Type = type;
+            }
+        }
+
+        /// <summary>
         /// Определение категорий с их бейджами
         /// </summary>
-        private static readonly Dictionary<string, List<string>> _categoryBadges = new()
+        private static readonly Dictionary<string, List<Badge>> _categoryBadges = new()
         {
-            ["Купюры"] = new List<string>
+            ["Купюры"] = new List<Badge>
             {
-                "Заказ наличных", "Обмен валюты", "Платежи",
-                "Совместные финансы", "Сейфы", "Электронные деньги",
-                "Кредит наличными", "Кэшбэк от партнеров", "Сбережения",
-                "Банкоматы и отделения"
+                new Badge("Заказ наличных", BadgeType.Primary),
+                new Badge("Обмен валюты", BadgeType.Primary),
+                new Badge("Платежи", BadgeType.Primary),
+                new Badge("Совместные финансы", BadgeType.Secondary),
+                new Badge("Сейфы", BadgeType.Secondary),
+                new Badge("Электронные деньги", BadgeType.Secondary),
+                new Badge("Кредит наличными", BadgeType.Secondary),
+                new Badge("Кэшбэк от партнеров", BadgeType.Discount),
+                new Badge("Сбережения", BadgeType.Secondary),
+                new Badge("Банкоматы и отделения", BadgeType.Secondary)
             },
 
-            ["Автомобиль"] = new List<string>
+            ["Автомобиль"] = new List<Badge>
             {
-                "Автокредит", "ОСАГО", "КАСКО", "Оплата штрафов ГАИ",
-                "Мои авто", "Оплата транспорта", "FIT SERVICE 5%",
-                "Планета АВТО 10%"
+                new Badge("Автокредит", BadgeType.Primary),
+                new Badge("ОСАГО", BadgeType.Primary),
+                new Badge("КАСКО", BadgeType.Primary),
+                new Badge("Оплата штрафов ГАИ", BadgeType.Secondary),
+                new Badge("Мои авто", BadgeType.Secondary),
+                new Badge("Оплата транспорта", BadgeType.Secondary),
+                new Badge("FIT SERVICE 5%", BadgeType.Discount),
+                new Badge("Планета АВТО 10%", BadgeType.Discount)
             },
 
-            ["Дом"] = new List<string>
+            ["Дом"] = new List<Badge>
             {
-                "Счета ЖКУ", "Страхование недвижемости",
-                "Оплата интернета, телефонии, ТВ", "Изменить адрес регистрации",
-                "Кредит под залог недвижемости", "Ипотека",
-                "Домовой 10%", "Ужин дома до 25%"
+                new Badge("Счета ЖКУ", BadgeType.Primary),
+                new Badge("Ипотека", BadgeType.Primary),
+                new Badge("Страхование недвижемости", BadgeType.Primary),
+                new Badge("Оплата интернета, телефонии, ТВ", BadgeType.Secondary),
+                new Badge("Изменить адрес регистрации", BadgeType.Secondary),
+                new Badge("Кредит под залог недвижемости", BadgeType.Secondary),
+                new Badge("Домовой 10%", BadgeType.Discount),
+                new Badge("Ужин дома до 25%", BadgeType.Discount)
             },
 
-            ["Здание"] = new List<string>
+            ["Здание"] = new List<Badge>
             {
-                "Кредиты бизнесу на покупку/строительство недвижимости",
-                "Лизинг нежилых помещений", "Банковские гарантии под строительство",
-                "Инвестиции в девелоперские проекты"
+                new Badge("Кредиты бизнесу на покупку/строительство недвижимости", BadgeType.Primary),
+                new Badge("Лизинг нежилых помещений", BadgeType.Primary),
+                new Badge("Банковские гарантии под строительство", BadgeType.Primary),
+                new Badge("Инвестиции в девелоперские проекты", BadgeType.Secondary)
             },
 
-            ["Ноутбук"] = new List<string>
+            ["Ноутбук"] = new List<Badge>
             {
-                "Haier до 10%", "Альфа-Маркет до 10%",
-                "Рассрочка", "Кредит"
+                new Badge("Рассрочка", BadgeType.Primary),
+                new Badge("Кредит", BadgeType.Primary),
+                new Badge("Haier до 10%", BadgeType.Discount),
+                new Badge("Альфа-Маркет до 10%", BadgeType.Discount)
             },
 
-            ["Смартфон"] = new List<string>
+            ["Смартфон"] = new List<Badge>
             {
-                "Мобильный банк", "Перевод по номеру телефона",
-                "Подключить NFC-оплату", "Кредит на смартфон",
-                "Haier до 10%", "Альфа-Маркет до 10%",
-                "Связаться с поддержкой"
+                new Badge("Мобильный банк", BadgeType.Primary),
+                new Badge("Перевод по номеру телефона", BadgeType.Primary),
+                new Badge("Подключить NFC-оплату", BadgeType.Primary),
+                new Badge("Кредит на смартфон", BadgeType.Secondary),
+                new Badge("Связаться с поддержкой", BadgeType.Secondary),
+                new Badge("Haier до 10%", BadgeType.Discount),
+                new Badge("Альфа-Маркет до 10%", BadgeType.Discount)
             },
 
-            ["БытоваяТехника"] = new List<string>
+            ["БытоваяТехника"] = new List<Badge>
             {
-                "Потребительский кредит на технику",
-                "Рассрочка при покупке в магазинах-партнёрах",
-                "Кэшбэк за покупки техники", "Страхование бытовой техники"
+                new Badge("Потребительский кредит на технику", BadgeType.Primary),
+                new Badge("Рассрочка при покупке в магазинах-партнёрах", BadgeType.Primary),
+                new Badge("Страхование бытовой техники", BadgeType.Primary),
+                new Badge("Кэшбэк за покупки техники", BadgeType.Discount)
             },
 
-            ["Магазин"] = new List<string>
+            ["Магазин"] = new List<Badge>
             {
-                "Расходы и доходы", "Эквайринг (терминалы, QR-оплаты)",
-                "Интернет-эквайринг (оплата на сайте, подписки)",
-                "Кредиты бизнесу на открытие торговых точек",
-                "Инкассация и обслуживание касс",
-                "POS-кредиты (покупка товаров в кредит на месте)"
+                new Badge("Расходы и доходы", BadgeType.Primary),
+                new Badge("Эквайринг (терминалы, QR-оплаты)", BadgeType.Primary),
+                new Badge("Интернет-эквайринг (оплата на сайте, подписки)", BadgeType.Primary),
+                new Badge("Кредиты бизнесу на открытие торговых точек", BadgeType.Secondary),
+                new Badge("Инкассация и обслуживание касс", BadgeType.Secondary),
+                new Badge("POS-кредиты (покупка товаров в кредит на месте)", BadgeType.Secondary)
             },
 
-            ["Документы"] = new List<string>
+            ["Документы"] = new List<Badge>
             {
-                "Счета ЖКУ", "Мои договоры", "Подписанные документы",
-                "Счета к оплате", "Подписка Альфа-Смарт", "Мои данные",
-                "Чеки за покупки", "Услуги по выпуску и ведению ценных бумаг"
+                new Badge("Счета ЖКУ", BadgeType.Primary),
+                new Badge("Мои договоры", BadgeType.Primary),
+                new Badge("Подписанные документы", BadgeType.Primary),
+                new Badge("Счета к оплате", BadgeType.Secondary),
+                new Badge("Подписка Альфа-Смарт", BadgeType.Secondary),
+                new Badge("Мои данные", BadgeType.Secondary),
+                new Badge("Чеки за покупки", BadgeType.Secondary),
+                new Badge("Услуги по выпуску и ведению ценных бумаг", BadgeType.Secondary)
             },
 
-            ["Ручка"] = new List<string>
+            ["Ручка"] = new List<Badge>
             {
-                "Корпоративные сувениры", "Подписанные документы",
-                "Электронная подпись"
+                new Badge("Подписанные документы", BadgeType.Primary),
+                new Badge("Электронная подпись", BadgeType.Primary),
+                new Badge("Корпоративные сувениры", BadgeType.Secondary)
             },
 
-            ["Тетрадь"] = new List<string>
+            ["Тетрадь"] = new List<Badge>
             {
-                "Финансовое планирование",
-                "Бухгалтерские сервисы для бизнеса",
-                "Планировщики в мобильном приложении банка",
-                "Отчёты по операциям", "Чеки за покупки"
+                new Badge("Финансовое планирование", BadgeType.Primary),
+                new Badge("Отчёты по операциям", BadgeType.Primary),
+                new Badge("Планировщики в мобильном приложении банка", BadgeType.Primary),
+                new Badge("Бухгалтерские сервисы для бизнеса", BadgeType.Secondary),
+                new Badge("Чеки за покупки", BadgeType.Secondary)
             },
 
-            ["Человек"] = new List<string>
+            ["Человек"] = new List<Badge>
             {
-                "Стать зарплатным клиентом", "Заказ дебетовой карты",
-                "Кредиты и депозиты для физлиц", "Страхование жизни и здоровья",
-                "Пенсионные программы", "Вход по биометрии", "Перевод",
-                "Подарок на Альфа-Маркете до 15%"
+                new Badge("Стать зарплатным клиентом", BadgeType.Primary),
+                new Badge("Заказ дебетовой карты", BadgeType.Primary),
+                new Badge("Кредиты и депозиты для физлиц", BadgeType.Primary),
+                new Badge("Страхование жизни и здоровья", BadgeType.Secondary),
+                new Badge("Пенсионные программы", BadgeType.Secondary),
+                new Badge("Вход по биометрии", BadgeType.Secondary),
+                new Badge("Перевод", BadgeType.Secondary),
+                new Badge("Подарок на Альфа-Маркете до 15%", BadgeType.Discount)
             }
         };
 
@@ -160,7 +219,7 @@ namespace BlackJackCamera.Services
         /// </summary>
         /// <param name="detections">Список распознанных объектов</param>
         /// <returns>Список уникальных бейджей или null если нет подходящих категорий</returns>
-        public static List<string>? GetBadgesForDetections(List<Detection> detections)
+        public static List<Badge>? GetBadgesForDetections(List<Detection> detections)
         {
             if (detections == null || detections.Count == 0)
                 return null;
@@ -181,7 +240,8 @@ namespace BlackJackCamera.Services
                 return null;
 
             // Собираем все бейджи из найденных категорий
-            var badges = new HashSet<string>();
+            var badges = new List<Badge>();
+            var seenTexts = new HashSet<string>();
 
             foreach (var category in categories)
             {
@@ -189,12 +249,17 @@ namespace BlackJackCamera.Services
                 {
                     foreach (var badge in categoryBadges)
                     {
-                        badges.Add(badge);
+                        // Избегаем дубликатов по тексту
+                        if (!seenTexts.Contains(badge.Text))
+                        {
+                            badges.Add(badge);
+                            seenTexts.Add(badge.Text);
+                        }
                     }
                 }
             }
 
-            return badges.Count > 0 ? badges.ToList() : null;
+            return badges.Count > 0 ? badges : null;
         }
 
         /// <summary>

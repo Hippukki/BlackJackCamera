@@ -189,11 +189,11 @@ namespace BlackJackCamera
         /// Отображает бейджи на экране
         /// </summary>
         /// <param name="badges">Список бейджей для отображения</param>
-        private void ShowBadges(List<string> badges)
+        private void ShowBadges(List<CategoryBadgeMapper.Badge> badges)
         {
             BadgesContainer.Children.Clear();
 
-            foreach (var badgeText in badges)
+            foreach (var badge in badges)
             {
                 var frame = new Frame
                 {
@@ -201,23 +201,64 @@ namespace BlackJackCamera
                     Padding = new Thickness(12, 6),
                     HasShadow = false,
                     Margin = new Thickness(4, 4),
-                    HorizontalOptions = LayoutOptions.Start
+                    HorizontalOptions = LayoutOptions.Start,
+                    Opacity = 0.9 // Небольшая прозрачность
                 };
 
-                frame.Background = new LinearGradientBrush
+                // Определяем градиент в зависимости от типа бейджа
+                LinearGradientBrush gradient;
+
+                switch (badge.Type)
                 {
-                    StartPoint = new Point(0, 0),
-                    EndPoint = new Point(1, 0),
-                    GradientStops = new GradientStopCollection
-                    {
-                        new GradientStop { Color = Color.FromArgb("#222222"), Offset = 0.0f },
-                        new GradientStop { Color = Color.FromArgb("#444444"), Offset = 1.0f }
-                    }
-                };
+                    case CategoryBadgeMapper.BadgeType.Primary:
+                        // Сине-фиолетовый градиент для основных услуг
+                        gradient = new LinearGradientBrush
+                        {
+                            StartPoint = new Point(0, 0),
+                            EndPoint = new Point(1, 0),
+                            GradientStops = new GradientStopCollection
+                            {
+                                new GradientStop { Color = Color.FromArgb("#4A5FD9"), Offset = 0.0f }, // Синий
+                                new GradientStop { Color = Color.FromArgb("#8B5CF6"), Offset = 1.0f }  // Фиолетовый
+                            }
+                        };
+                        break;
+
+                    case CategoryBadgeMapper.BadgeType.Discount:
+                        // Красный → прозрачный для скидок
+                        gradient = new LinearGradientBrush
+                        {
+                            StartPoint = new Point(0, 0),
+                            EndPoint = new Point(1, 0),
+                            GradientStops = new GradientStopCollection
+                            {
+                                new GradientStop { Color = Color.FromArgb("#EF4444"), Offset = 0.0f }, // Красный
+                                new GradientStop { Color = Color.FromArgb("#50EF4444"), Offset = 1.0f } // Прозрачный красный
+                            }
+                        };
+                        break;
+
+                    case CategoryBadgeMapper.BadgeType.Secondary:
+                    default:
+                        // Голубой → бирюзовый для остальных услуг
+                        gradient = new LinearGradientBrush
+                        {
+                            StartPoint = new Point(0, 0),
+                            EndPoint = new Point(1, 0),
+                            GradientStops = new GradientStopCollection
+                            {
+                                new GradientStop { Color = Color.FromArgb("#06B6D4"), Offset = 0.0f }, // Голубой
+                                new GradientStop { Color = Color.FromArgb("#14B8A6"), Offset = 1.0f }  // Бирюзовый
+                            }
+                        };
+                        break;
+                }
+
+                frame.Background = gradient;
 
                 var label = new Label
                 {
-                    Text = badgeText,
+                    Text = badge.Text,
                     TextColor = Colors.White,
                     FontSize = 20,
                     HorizontalOptions = LayoutOptions.Center,
