@@ -86,6 +86,11 @@ namespace BlackJackCamera
                 // Показываем замороженное изображение и лоадер
                 MainThread.BeginInvokeOnMainThread(() =>
                 {
+                    Corner1.IsVisible = false;
+                    Corner2.IsVisible = false;
+                    Corner3.IsVisible = false;
+                    Corner4.IsVisible = false;
+                    HintPill.IsVisible = false;
                     FrozenImage.Source = imageSource;
                     FrozenImage.IsVisible = true;
                     DarkOverlay.IsVisible = true;
@@ -214,7 +219,7 @@ namespace BlackJackCamera
                 {
                     Text = badgeText,
                     TextColor = Colors.White,
-                    FontSize = 14,
+                    FontSize = 20,
                     HorizontalOptions = LayoutOptions.Center,
                     VerticalOptions = LayoutOptions.Center,
                     HorizontalTextAlignment = TextAlignment.Center,
@@ -244,6 +249,11 @@ namespace BlackJackCamera
         /// </summary>
         private void HideLoadingUI()
         {
+            Corner1.IsVisible = false;
+            Corner2.IsVisible = false;
+            Corner3.IsVisible = false;
+            Corner4.IsVisible = false;
+            HintPill.IsVisible = false;
             FrozenImage.IsVisible = false;
             DarkOverlay.IsVisible = false;
             LoadingIndicator.IsVisible = false;

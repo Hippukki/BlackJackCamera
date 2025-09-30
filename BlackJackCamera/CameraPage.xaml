@@ -86,10 +86,10 @@
       <AbsoluteLayout>
 
         <!-- угловые элементы (вырезанные PNG) -->
-        <Image Source="CameraPage/corner_tl.svg" AbsoluteLayout.LayoutBounds="0.06,0.08,72,72" AbsoluteLayout.LayoutFlags="PositionProportional"/>
-        <Image Source="CameraPage/corner_tr.svg" AbsoluteLayout.LayoutBounds="0.94,0.08,72,72" AbsoluteLayout.LayoutFlags="PositionProportional"/>
-        <Image Source="CameraPage/corner_bl.svg" AbsoluteLayout.LayoutBounds="0.06,0.92,72,72" AbsoluteLayout.LayoutFlags="PositionProportional"/>
-        <Image Source="CameraPage/corner_br.svg" AbsoluteLayout.LayoutBounds="0.94,0.92,72,72" AbsoluteLayout.LayoutFlags="PositionProportional"/>
+        <Image x:Name="Corner1" Source="CameraPage/corner_tl.svg" AbsoluteLayout.LayoutBounds="0.06,0.08,72,72" AbsoluteLayout.LayoutFlags="PositionProportional"/>
+        <Image x:Name="Corner2" Source="CameraPage/corner_tr.svg" AbsoluteLayout.LayoutBounds="0.94,0.08,72,72" AbsoluteLayout.LayoutFlags="PositionProportional"/>
+        <Image x:Name="Corner3" Source="CameraPage/corner_bl.svg" AbsoluteLayout.LayoutBounds="0.06,0.92,72,72" AbsoluteLayout.LayoutFlags="PositionProportional"/>
+        <Image x:Name="Corner4" Source="CameraPage/corner_br.svg" AbsoluteLayout.LayoutBounds="0.94,0.92,72,72" AbsoluteLayout.LayoutFlags="PositionProportional"/>
 
         <!-- подсказка (внизу поверх preview) -->
         <Frame x:Name="HintPill"
