@@ -133,15 +133,33 @@ namespace BlackJackCamera
         /// <param name="stream">Поток с изображением</param>
         private void ProcessPhoto(Stream stream)
         {
-            var bitmap = _imageProcessor.ResizeImage(stream, 640, 640);
-            var tensor = _imageProcessor.ConvertToTensor(bitmap);
-
-            var detections = _detectionService.DetectObjects(tensor);
-
-            MainThread.BeginInvokeOnMainThread(() =>
+            try
             {
-                DisplayDetectionResults(detections);
-            });
+                var bitmap = _imageProcessor.ResizeImage(stream, 640, 640);
+                System.Diagnostics.Debug.WriteLine($"[DEBUG] Bitmap размер: {bitmap.Width}x{bitmap.Height}");
+
+                var tensor = _imageProcessor.ConvertToTensor(bitmap);
+                System.Diagnostics.Debug.WriteLine($"[DEBUG] Tensor dimensions: [{string.Join(", ", tensor.Dimensions.ToArray())}]");
+
+                var detections = _detectionService.DetectObjects(tensor);
+                System.Diagnostics.Debug.WriteLine($"[DEBUG] Detections count: {detections.Count}");
+
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    DisplayDetectionResults(detections);
+                });
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[ERROR] ProcessPhoto: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"[ERROR] StackTrace: {ex.StackTrace}");
+
+                MainThread.BeginInvokeOnMainThread(async () =>
+                {
+                    HideLoadingUI();
+                    await DisplayAlert("Ошибка обработки", ex.Message, "OK");
+                });
+            }
         }
 
         /// <summary>
@@ -290,11 +308,11 @@ namespace BlackJackCamera
         /// </summary>
         private void HideLoadingUI()
         {
-            Corner1.IsVisible = false;
-            Corner2.IsVisible = false;
-            Corner3.IsVisible = false;
-            Corner4.IsVisible = false;
-            HintPill.IsVisible = false;
+            Corner1.IsVisible = true;
+            Corner2.IsVisible = true;
+            Corner3.IsVisible = true;
+            Corner4.IsVisible = true;
+            HintPill.IsVisible = true;
             FrozenImage.IsVisible = false;
             DarkOverlay.IsVisible = false;
             LoadingIndicator.IsVisible = false;
