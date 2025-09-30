@@ -51,6 +51,7 @@
             BackgroundColor="#0B0B0C"
             VerticalOptions="End"
             HorizontalOptions="Fill"
+            Margin="-1,0,-1,0"
             IsVisible="False">
       <Border.StrokeShape>
         <RoundRectangle CornerRadius="16,16,0,0"/>
@@ -59,7 +60,7 @@
         <Shadow Brush="Black" Offset="0,-4" Radius="20" Opacity="0.5"/>
       </Border.Shadow>
 
-      <Grid RowDefinitions="Auto,Auto,*" Padding="0">
+      <Grid RowDefinitions="Auto,Auto,Auto" Padding="0">
         <!-- Полоска для захвата (Handle) -->
         <BoxView Grid.Row="0"
                  WidthRequest="40"
@@ -76,19 +77,16 @@
                  HorizontalOptions="Fill"
                  Margin="0,0,0,16"/>
 
-        <!-- Скроллируемый контейнер с бейджами -->
-        <ScrollView Grid.Row="2"
-                    x:Name="BadgesScrollView"
-                    MaximumHeightRequest="500"
-                    VerticalScrollBarVisibility="Never">
-          <FlexLayout x:Name="BadgesContainer"
-                      Direction="Row"
-                      Wrap="Wrap"
-                      JustifyContent="Start"
-                      AlignItems="Start"
-                      AlignContent="Start"
-                      Padding="16,0,16,24"/>
-        </ScrollView>
+        <!-- Контейнер с бейджами (без ScrollView, чтобы подстраивался под контент) -->
+        <FlexLayout Grid.Row="2"
+                    x:Name="BadgesContainer"
+                    Direction="Row"
+                    Wrap="Wrap"
+                    JustifyContent="Start"
+                    AlignItems="Start"
+                    AlignContent="Start"
+                    Padding="16,0,16,24"/>
+      </Grid>
 
         <!-- Gesture recognizer для свайпа вниз -->
         <Grid.GestureRecognizers>
