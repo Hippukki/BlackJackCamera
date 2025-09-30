@@ -165,7 +165,7 @@ namespace BlackJackCamera
                 HideLoadingUI();
 
                 var labels = _detectionService.GetClassNames();
-                var message = "Кажется у нас пока нет подходящих по смыслу услуг для:";
+                var message = "Кажется у нас пока нет подходящих по смыслу услуг для: ";
                 message += string.Join("\n", detections.Take(5).Select(d =>
                     $"{labels[d.ClassId]}"));
 
