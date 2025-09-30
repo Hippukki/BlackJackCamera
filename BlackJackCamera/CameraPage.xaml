@@ -40,7 +40,27 @@
       <Border.StrokeShape>
         <RoundRectangle CornerRadius="0"/>
       </Border.StrokeShape>
+      <Border.GestureRecognizers>
+        <TapGestureRecognizer Tapped="OnOverlayTapped"/>
+      </Border.GestureRecognizers>
     </Border>
+
+    <!-- FlexLayout с бейджами -->
+    <ScrollView x:Name="BadgesScrollView"
+                Grid.RowSpan="3"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                IsVisible="False"
+                Margin="20,0"
+                MaximumHeightRequest="600">
+      <FlexLayout x:Name="BadgesContainer"
+                  Direction="Row"
+                  Wrap="Wrap"
+                  JustifyContent="Center"
+                  AlignItems="Start"
+                  AlignContent="Start"
+                  Margin="0,100,0,100"/>
+    </ScrollView>
 
     <ActivityIndicator x:Name="LoadingIndicator"
                       Grid.RowSpan="3"

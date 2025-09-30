@@ -1,6 +1,6 @@
 ﻿using BlackJackCamera.Interfaces;
+using BlackJackCamera.Services;
 using CommunityToolkit.Maui.Core;
-using static Microsoft.Maui.ApplicationModel.Permissions;
 
 namespace BlackJackCamera
 {
@@ -146,22 +146,96 @@ namespace BlackJackCamera
         private async void DisplayDetectionResults(List<Detection> detections)
         {
             // Скрываем лоадер
-            HideLoadingUI();
+            LoadingIndicator.IsVisible = false;
+            LoadingIndicator.IsRunning = false;
 
             if (detections.Count == 0)
             {
+                HideLoadingUI();
                 await DisplayAlert("Результат", "Объекты не обнаружены", "OK");
                 return;
             }
 
-            var labels = _detectionService.GetClassNames();
-            var message = string.Join("\n", detections.Take(5).Select(d =>
-                $"{labels[d.ClassId]} ({d.Confidence * 100:F1}%)"));
+            // Получаем бейджи для распознанных объектов
+            var badges = CategoryBadgeMapper.GetBadgesForDetections(detections);
 
-            if (detections.Count > 5)
-                message += $"\n\n... и ещё {detections.Count - 5} объектов";
+            if (badges == null || badges.Count == 0)
+            {
+                // Если нет бейджей для распознанных объектов, показываем обычный alert
+                HideLoadingUI();
 
-            await DisplayAlert($"Обнаружено объектов: {detections.Count}", message, "OK");
+                var labels = _detectionService.GetClassNames();
+                var message = string.Join("\n", detections.Take(5).Select(d =>
+                    $"{labels[d.ClassId]}"));
+
+                if (detections.Count > 5)
+                    message += $"\n\n... и ещё {detections.Count - 5} объектов";
+
+                await DisplayAlert($"Упс! Кажется у нас пока нет подходящих по смыслу услуг для:", message, "OK");
+                return;
+            }
+
+            // Отображаем бейджи
+            ShowBadges(badges);
+        }
+
+        /// <summary>
+        /// Отображает бейджи на экране
+        /// </summary>
+        /// <param name="badges">Список бейджей для отображения</param>
+        private void ShowBadges(List<string> badges)
+        {
+            BadgesContainer.Children.Clear();
+
+            foreach (var badgeText in badges)
+            {
+                var frame = new Frame
+                {
+                    CornerRadius = 21,
+                    Padding = new Thickness(12, 6),
+                    HasShadow = false,
+                    Margin = new Thickness(4, 4),
+                    HorizontalOptions = LayoutOptions.Start
+                };
+
+                frame.Background = new LinearGradientBrush
+                {
+                    StartPoint = new Point(0, 0),
+                    EndPoint = new Point(1, 0),
+                    GradientStops = new GradientStopCollection
+                    {
+                        new GradientStop { Color = Color.FromArgb("#222222"), Offset = 0.0f },
+                        new GradientStop { Color = Color.FromArgb("#444444"), Offset = 1.0f }
+                    }
+                };
+
+                var label = new Label
+                {
+                    Text = badgeText,
+                    TextColor = Colors.White,
+                    FontSize = 14,
+                    HorizontalOptions = LayoutOptions.Center,
+                    VerticalOptions = LayoutOptions.Center,
+                    HorizontalTextAlignment = TextAlignment.Center,
+                    VerticalTextAlignment = TextAlignment.Center,
+                    BackgroundColor = Colors.Transparent
+                };
+
+                frame.Content = label;
+                BadgesContainer.Children.Add(frame);
+            }
+
+            // Показываем бейджи
+            BadgesScrollView.IsVisible = true;
+            ShutterButton.IsEnabled = false;
+        }
+
+        /// <summary>
+        /// Обработчик нажатия на затемнённую область - скрывает бейджи
+        /// </summary>
+        private void OnOverlayTapped(object sender, EventArgs e)
+        {
+            HideLoadingUI();
         }
 
         /// <summary>
@@ -173,6 +247,8 @@ namespace BlackJackCamera
             DarkOverlay.IsVisible = false;
             LoadingIndicator.IsVisible = false;
             LoadingIndicator.IsRunning = false;
+            BadgesScrollView.IsVisible = false;
+            BadgesContainer.Children.Clear();
             ShutterButton.IsEnabled = true;
         }
 
