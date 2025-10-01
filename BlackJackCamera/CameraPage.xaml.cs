@@ -198,55 +198,61 @@ namespace BlackJackCamera
             {
                 var frame = new Frame
                 {
-                    CornerRadius = 21,
-                    Padding = new Thickness(12, 6),
+                    CornerRadius = 18,
+                    Padding = new Thickness(16, 8),
                     HasShadow = false,
-                    Margin = new Thickness(4, 3),
+                    Margin = new Thickness(6, 4),
                     HorizontalOptions = LayoutOptions.Start,
-                    Opacity = 0.9
+                    Opacity = 1.0
                 };
 
-                // Определяем градиент в зависимости от типа бейджа
+                // Определяем тройной градиент в зависимости от типа бейджа (как у One UI)
                 LinearGradientBrush gradient;
 
                 switch (badge.Type)
                 {
                     case CategoryBadgeMapper.BadgeType.Primary:
+                        // Синий градиент с переходом в полупрозрачность
                         gradient = new LinearGradientBrush
                         {
                             StartPoint = new Point(0, 0),
-                            EndPoint = new Point(1, 0),
+                            EndPoint = new Point(1, 1),
                             GradientStops = new GradientStopCollection
                             {
-                                new GradientStop { Color = Color.FromArgb("#4A5FD9"), Offset = 0.0f },
-                                new GradientStop { Color = Color.FromArgb("#8B5CF6"), Offset = 1.0f }
+                                new GradientStop { Color = Color.FromArgb("#D04A5FD9"), Offset = 0.0f },
+                                new GradientStop { Color = Color.FromArgb("#C06B7AE5"), Offset = 0.5f },
+                                new GradientStop { Color = Color.FromArgb("#904A5FD9"), Offset = 1.0f }
                             }
                         };
                         break;
 
                     case CategoryBadgeMapper.BadgeType.Discount:
+                        // Красный градиент с переходом в полупрозрачность
                         gradient = new LinearGradientBrush
                         {
                             StartPoint = new Point(0, 0),
-                            EndPoint = new Point(1, 0),
+                            EndPoint = new Point(1, 1),
                             GradientStops = new GradientStopCollection
                             {
-                                new GradientStop { Color = Color.FromArgb("#EF4444"), Offset = 0.0f },
-                                new GradientStop { Color = Color.FromArgb("#50EF4444"), Offset = 1.0f }
+                                new GradientStop { Color = Color.FromArgb("#D0EF4444"), Offset = 0.0f },
+                                new GradientStop { Color = Color.FromArgb("#A0F87171"), Offset = 0.5f },
+                                new GradientStop { Color = Color.FromArgb("#60EF4444"), Offset = 1.0f }
                             }
                         };
                         break;
 
                     case CategoryBadgeMapper.BadgeType.Secondary:
                     default:
+                        // Бирюзовый градиент с переходом в полупрозрачность
                         gradient = new LinearGradientBrush
                         {
                             StartPoint = new Point(0, 0),
-                            EndPoint = new Point(1, 0),
+                            EndPoint = new Point(1, 1),
                             GradientStops = new GradientStopCollection
                             {
-                                new GradientStop { Color = Color.FromArgb("#06B6D4"), Offset = 0.0f },
-                                new GradientStop { Color = Color.FromArgb("#14B8A6"), Offset = 1.0f }
+                                new GradientStop { Color = Color.FromArgb("#D006B6D4"), Offset = 0.0f },
+                                new GradientStop { Color = Color.FromArgb("#B014B8A6"), Offset = 0.5f },
+                                new GradientStop { Color = Color.FromArgb("#8006B6D4"), Offset = 1.0f }
                             }
                         };
                         break;
@@ -258,7 +264,8 @@ namespace BlackJackCamera
                 {
                     Text = badge.Text,
                     TextColor = Colors.White,
-                    FontSize = 16,
+                    FontSize = 15,
+                    FontAttributes = FontAttributes.Bold,
                     HorizontalOptions = LayoutOptions.Center,
                     VerticalOptions = LayoutOptions.Center,
                     HorizontalTextAlignment = TextAlignment.Center,

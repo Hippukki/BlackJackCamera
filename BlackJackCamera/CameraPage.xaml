@@ -131,49 +131,49 @@
     <!-- Bottom Sheet с бейджами (в конце, чтобы рисовался поверх всех элементов) -->
     <Border x:Name="BottomSheet"
             Grid.RowSpan="3"
-            BackgroundColor="#0B0B0C"
             VerticalOptions="End"
             HorizontalOptions="Fill"
             Margin="-1,0,-1,0"
             IsVisible="False">
+      <Border.Background>
+        <!-- Тройной градиент как у One UI -->
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+          <GradientStop Color="#E0252930" Offset="0.0" />
+          <GradientStop Color="#D0303844" Offset="0.5" />
+          <GradientStop Color="#C0252930" Offset="1.0" />
+        </LinearGradientBrush>
+      </Border.Background>
       <Border.StrokeShape>
-        <RoundRectangle CornerRadius="16,16,0,0"/>
+        <RoundRectangle CornerRadius="28,28,0,0"/>
       </Border.StrokeShape>
       <Border.Shadow>
-        <Shadow Brush="Black" Offset="0,-4" Radius="20" Opacity="0.5"/>
+        <Shadow Brush="Black" Offset="0,-8" Radius="32" Opacity="0.6"/>
       </Border.Shadow>
 
-      <Grid RowDefinitions="Auto,Auto,Auto" Padding="0">
+      <Grid RowDefinitions="Auto,Auto" Padding="0">
         <!-- Gesture recognizer для свайпа вниз -->
         <Grid.GestureRecognizers>
           <SwipeGestureRecognizer Direction="Down" Swiped="OnBottomSheetSwipedDown"/>
         </Grid.GestureRecognizers>
 
-        <!-- Полоска для захвата (Handle) -->
+        <!-- Полоска для захвата (Handle) как у One UI -->
         <BoxView Grid.Row="0"
-                 WidthRequest="40"
+                 WidthRequest="48"
                  HeightRequest="4"
-                 BackgroundColor="#444444"
+                 BackgroundColor="#60FFFFFF"
                  CornerRadius="2"
-                 Margin="0,12,0,8"
+                 Margin="0,16,0,20"
                  HorizontalOptions="Center"/>
 
-        <!-- Серая разделительная линия -->
-        <BoxView Grid.Row="1"
-                 HeightRequest="1"
-                 BackgroundColor="#333333"
-                 HorizontalOptions="Fill"
-                 Margin="0,0,0,16"/>
-
         <!-- Контейнер с бейджами (без ScrollView, чтобы подстраивался под контент) -->
-        <FlexLayout Grid.Row="2"
+        <FlexLayout Grid.Row="1"
                     x:Name="BadgesContainer"
                     Direction="Row"
                     Wrap="Wrap"
                     JustifyContent="Start"
                     AlignItems="Start"
                     AlignContent="Start"
-                    Padding="16,0,16,24"/>
+                    Padding="20,0,20,28"/>
       </Grid>
     </Border>
 
