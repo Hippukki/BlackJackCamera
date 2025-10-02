@@ -138,9 +138,8 @@
       <Border.Background>
         <!-- Тройной градиент как у One UI -->
         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-          <GradientStop Color="#E0252930" Offset="0.0" />
-          <GradientStop Color="#D0303844" Offset="0.5" />
-          <GradientStop Color="#C0252930" Offset="1.0" />
+          <GradientStop Color="#1B1B1C" Offset="0.0" /> 
+          <GradientStop Color="#883A3A3D" Offset="1.0" /> 
         </LinearGradientBrush>
       </Border.Background>
       <Border.StrokeShape>
