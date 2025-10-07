@@ -231,82 +231,95 @@
             <Grid.GestureRecognizers>
                 <TapGestureRecognizer Tapped="OnSpotlightTapped"/>
             </Grid.GestureRecognizers>
-
-            <!-- Tooltip бейдж с текстом -->
-            <Border x:Name="TooltipBadge"
-                    VerticalOptions="End"
-                    HorizontalOptions="End"
-                    Margin="0,0,20,180"
-                    MaximumWidthRequest="240">
-                <Border.Background>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                        <GradientStop Color="#EF3124" Offset="0.0" />
-                        <GradientStop Color="#FF6B35" Offset="1.0" />
-                    </LinearGradientBrush>
-                </Border.Background>
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="18"/>
-                </Border.StrokeShape>
-                <Border.Shadow>
-                    <Shadow Brush="#EF3124" Offset="0,4" Radius="20" Opacity="0.6"/>
-                </Border.Shadow>
-
-                <StackLayout Padding="20,14" Spacing="0">
-                    <Label Text="Посмотри на мир глазами банка"
-                           TextColor="White"
-                           FontSize="16"
-                           FontAttributes="Bold"
-                           HorizontalTextAlignment="Center"
-                           LineBreakMode="WordWrap"/>
-                </StackLayout>
-            </Border>
-
-            <!-- Стрелка указывающая на кнопку -->
-            <Path x:Name="ArrowPointer"
-                  Data="M 10,0 L 20,15 L 0,15 Z"
-                  Fill="White"
-                  VerticalOptions="End"
-                  HorizontalOptions="End"
-                  Margin="0,0,42,195"
-                  Opacity="0.9"
-                  ZIndex="1000">
-                <Path.Shadow>
-                    <Shadow Brush="Black" Offset="0,2" Radius="8" Opacity="0.5"/>
-                </Path.Shadow>
-            </Path>
         </Grid>
 
-        <!-- ====== SCANNER BUTTON OVERLAY (поверх spotlight) ====== -->
-        <Border x:Name="ScannerButtonOverlay"
-                Grid.RowSpan="3"
-                IsVisible="False"
-                Margin="0,0,24,150"
-                BackgroundColor="Transparent"
-                WidthRequest="65"
-                HeightRequest="65"
-                VerticalOptions="End"
-                HorizontalOptions="End"
-                ZIndex="2000">
-            <Border.StrokeShape>
-                <RoundRectangle CornerRadius="16"/>
-            </Border.StrokeShape>
-            <Border.Shadow>
-                <Shadow Brush="#FF6B35" Offset="0,0" Radius="40" Opacity="0.9"/>
-            </Border.Shadow>
+        <!-- ====== TOOLTIP ELEMENTS (поверх spotlight) ====== -->
+        <Grid x:Name="TooltipContainer" Grid.Row="1" IsVisible="False" Padding="16,6,16,20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-            <Frame CornerRadius="12"
-                   BackgroundColor="#222224"
-                   Padding="5"
-                   WidthRequest="45"
-                   HeightRequest="45"
-                   HasShadow="False"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center">
-                <ImageButton Source="MainPage/scanner.png"
-                             BackgroundColor="Transparent"
-                             Clicked="OnScanClicked" />
-            </Frame>
-        </Border>
+            <!-- Бейдж и кнопка на одном уровне -->
+            <Grid Grid.Row="1" ColumnDefinitions="*,Auto" VerticalOptions="Center" Margin="0,2,0,0">
+
+                <!-- Tooltip бейдж слева -->
+                <Border x:Name="TooltipBadge"
+                        Grid.Column="0"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Start"
+                        MaximumWidthRequest="240"
+                        Margin="0,0,8,0">
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="#EF3124" Offset="0.0" />
+                            <GradientStop Color="#FF6B35" Offset="1.0" />
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="18"/>
+                    </Border.StrokeShape>
+                    <Border.Shadow>
+                        <Shadow Brush="#EF3124" Offset="0,4" Radius="20" Opacity="0.6"/>
+                    </Border.Shadow>
+
+                    <StackLayout Padding="20,14" Spacing="0">
+                        <Label Text="Посмотри на мир глазами банка"
+                               TextColor="White"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               HorizontalTextAlignment="Center"
+                               LineBreakMode="WordWrap"/>
+                    </StackLayout>
+                </Border>
+
+                <!-- Стрелка между бейджем и кнопкой -->
+                <Path x:Name="ArrowPointer"
+                      Grid.Column="0"
+                      Data="M 0,8 L 15,0 L 15,16 Z"
+                      Fill="White"
+                      VerticalOptions="Center"
+                      HorizontalOptions="End"
+                      Margin="0,0,-10,0"
+                      Opacity="0.9"
+                      ZIndex="1000">
+                    <Path.Shadow>
+                        <Shadow Brush="Black" Offset="0,2" Radius="8" Opacity="0.5"/>
+                    </Path.Shadow>
+                </Path>
+
+                <!-- Сканер справа (точная копия оригинала) -->
+                <Border x:Name="ScannerButtonOverlay"
+                        Grid.Column="1"
+                        Margin="8,0,0,0"
+                        BackgroundColor="Transparent"
+                        WidthRequest="65"
+                        HeightRequest="65"
+                        VerticalOptions="Center"
+                        HorizontalOptions="End"
+                        ZIndex="2000">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="16"/>
+                    </Border.StrokeShape>
+                    <Border.Shadow>
+                        <Shadow Brush="#FF6B35" Offset="0,0" Radius="40" Opacity="0.9"/>
+                    </Border.Shadow>
+
+                    <Frame CornerRadius="12"
+                           BackgroundColor="#222224"
+                           Padding="5"
+                           WidthRequest="45"
+                           HeightRequest="45"
+                           HasShadow="False"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center">
+                        <ImageButton Source="MainPage/scanner.png"
+                                     BackgroundColor="Transparent"
+                                     Clicked="OnScanClicked" />
+                    </Frame>
+                </Border>
+            </Grid>
+        </Grid>
     </Grid>
 
 </ContentPage>

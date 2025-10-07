@@ -44,19 +44,23 @@ public partial class MainPage : ContentPage
     {
         SpotlightOverlay.IsVisible = true;
         SpotlightOverlay.Opacity = 0;
-        ScannerButtonOverlay.IsVisible = true;
-        ScannerButtonOverlay.Opacity = 0;
+        TooltipContainer.IsVisible = true;
+        TooltipContainer.Opacity = 0;
 
         // Устанавливаем начальные позиции для анимации
-        TooltipBadge.TranslationY = -50;
+        TooltipBadge.TranslationX = -50;
         TooltipBadge.Opacity = 0;
         ArrowPointer.Opacity = 0;
         ScannerButtonOverlay.Scale = 0.8;
+        ScannerButtonOverlay.Opacity = 0;
 
         // Анимация появления overlay
         await SpotlightOverlay.FadeTo(1, 300, Easing.CubicOut);
 
-        // Анимация появления бейджа
+        // Показываем контейнер
+        await TooltipContainer.FadeTo(1, 100);
+
+        // Анимация появления бейджа слева направо
         var badgeAnimation = TooltipBadge.FadeTo(1, 400, Easing.CubicOut);
         var badgeSlide = TooltipBadge.TranslateTo(0, 0, 400, Easing.CubicOut);
 
@@ -112,14 +116,12 @@ public partial class MainPage : ContentPage
 
         // Анимация исчезновения
         await Task.WhenAll(
-            TooltipBadge.FadeTo(0, 250, Easing.CubicIn),
-            ArrowPointer.FadeTo(0, 250, Easing.CubicIn),
-            ScannerButtonOverlay.FadeTo(0, 250, Easing.CubicIn),
+            TooltipContainer.FadeTo(0, 250, Easing.CubicIn),
             SpotlightOverlay.FadeTo(0, 300, Easing.CubicIn)
         );
 
         SpotlightOverlay.IsVisible = false;
-        ScannerButtonOverlay.IsVisible = false;
+        TooltipContainer.IsVisible = false;
     }
 
     /// <summary>
