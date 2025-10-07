@@ -234,14 +234,9 @@
         </Grid>
 
         <!-- ====== TOOLTIP ELEMENTS (поверх spotlight) ====== -->
-        <Grid x:Name="TooltipContainer" Grid.Row="1" IsVisible="False" Padding="16,6,16,20">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-
+        <Grid x:Name="TooltipContainer" Grid.RowSpan="3" IsVisible="False">
             <!-- Бейдж и кнопка на одном уровне -->
-            <Grid Grid.Row="1" ColumnDefinitions="*,Auto" VerticalOptions="Center" Margin="0,2,0,0">
+            <Grid ColumnDefinitions="*,Auto" VerticalOptions="Start" HorizontalOptions="Fill" Margin="16,420,16,0">
 
                 <!-- Tooltip бейдж слева -->
                 <Border x:Name="TooltipBadge"
