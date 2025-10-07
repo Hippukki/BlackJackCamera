@@ -44,13 +44,14 @@ public partial class MainPage : ContentPage
     {
         SpotlightOverlay.IsVisible = true;
         SpotlightOverlay.Opacity = 0;
+        ScannerButtonOverlay.IsVisible = true;
+        ScannerButtonOverlay.Opacity = 0;
 
         // Устанавливаем начальные позиции для анимации
         TooltipBadge.TranslationY = -50;
         TooltipBadge.Opacity = 0;
         ArrowPointer.Opacity = 0;
-        PulseRing.Scale = 0.8;
-        PulseRing.Opacity = 0;
+        ScannerButtonOverlay.Scale = 0.8;
 
         // Анимация появления overlay
         await SpotlightOverlay.FadeTo(1, 300, Easing.CubicOut);
@@ -64,33 +65,40 @@ public partial class MainPage : ContentPage
         // Анимация появления стрелки
         await ArrowPointer.FadeTo(0.9, 300, Easing.CubicOut);
 
-        // Анимация появления кольца
+        // Анимация появления кнопки
         await Task.WhenAll(
-            PulseRing.FadeTo(0.7, 300, Easing.CubicOut),
-            PulseRing.ScaleTo(1, 300, Easing.CubicOut)
+            ScannerButtonOverlay.FadeTo(1, 300, Easing.CubicOut),
+            ScannerButtonOverlay.ScaleTo(1, 300, Easing.CubicOut)
         );
 
-        // Запускаем пульсацию кольца
+        // Запускаем пульсацию кнопки
         StartPulseAnimation();
     }
 
     /// <summary>
-    /// Запускает анимацию пульсации кольца
+    /// Запускает анимацию пульсации кнопки сканера
     /// </summary>
     private async void StartPulseAnimation()
     {
         _isPulsing = true;
 
-        while (_isPulsing && PulseRing.IsVisible)
+        while (_isPulsing && ScannerButtonOverlay.IsVisible)
         {
+            // Добавляем свечение через Shadow
+            ScannerButtonOverlay.Shadow = new Shadow
+            {
+                Brush = Colors.OrangeRed,
+                Offset = new Point(0, 0),
+                Radius = 30,
+                Opacity = 0.8f
+            };
+
             await Task.WhenAll(
-                PulseRing.ScaleTo(1.15, 800, Easing.SinInOut),
-                PulseRing.FadeTo(0.3, 800, Easing.SinInOut)
+                ScannerButtonOverlay.ScaleTo(1.15, 800, Easing.SinInOut)
             );
 
             await Task.WhenAll(
-                PulseRing.ScaleTo(1, 800, Easing.SinInOut),
-                PulseRing.FadeTo(0.7, 800, Easing.SinInOut)
+                ScannerButtonOverlay.ScaleTo(1.0, 800, Easing.SinInOut)
             );
         }
     }
@@ -117,11 +125,12 @@ public partial class MainPage : ContentPage
         await Task.WhenAll(
             TooltipBadge.FadeTo(0, 250, Easing.CubicIn),
             ArrowPointer.FadeTo(0, 250, Easing.CubicIn),
-            PulseRing.FadeTo(0, 250, Easing.CubicIn),
+            ScannerButtonOverlay.FadeTo(0, 250, Easing.CubicIn),
             SpotlightOverlay.FadeTo(0, 300, Easing.CubicIn)
         );
 
         SpotlightOverlay.IsVisible = false;
+        ScannerButtonOverlay.IsVisible = false;
     }
 
     /// <summary>

@@ -234,7 +234,7 @@
 
             <!-- Tooltip бейдж с текстом -->
             <Border x:Name="TooltipBadge"
-                    VerticalOptions="Center"
+                    VerticalOptions="End"
                     HorizontalOptions="End"
                     Margin="0,0,20,180"
                     MaximumWidthRequest="240">
@@ -265,36 +265,33 @@
             <Path x:Name="ArrowPointer"
                   Data="M 10,0 L 20,15 L 0,15 Z"
                   Fill="White"
-                  VerticalOptions="Center"
+                  VerticalOptions="End"
                   HorizontalOptions="End"
-                  Margin="0,0,42,130"
+                  Margin="0,0,42,140"
                   Opacity="0.9">
                 <Path.Shadow>
                     <Shadow Brush="Black" Offset="0,2" Radius="8" Opacity="0.3"/>
                 </Path.Shadow>
             </Path>
-
-            <!-- Пульсирующее кольцо вокруг кнопки сканера -->
-            <Border x:Name="PulseRing"
-                    WidthRequest="70"
-                    HeightRequest="70"
-                    VerticalOptions="Center"
-                    HorizontalOptions="End"
-                    Margin="0,0,12,80"
-                    BackgroundColor="Transparent"
-                    StrokeThickness="3"
-                    Opacity="0.7">
-                <Border.Stroke>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                        <GradientStop Color="#EF3124" Offset="0.0" />
-                        <GradientStop Color="#FF6B35" Offset="1.0" />
-                    </LinearGradientBrush>
-                </Border.Stroke>
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="16"/>
-                </Border.StrokeShape>
-            </Border>
         </Grid>
+
+        <!-- ====== SCANNER BUTTON OVERLAY (поверх spotlight) ====== -->
+        <Frame x:Name="ScannerButtonOverlay"
+               Grid.RowSpan="3"
+               IsVisible="False"
+               Margin="0,0,24,87"
+               CornerRadius="12"
+               BackgroundColor="#222224"
+               Padding="5"
+               WidthRequest="45"
+               HeightRequest="45"
+               HasShadow="False"
+               VerticalOptions="End"
+               HorizontalOptions="End">
+            <ImageButton Source="MainPage/scanner.png"
+                         BackgroundColor="Transparent"
+                         Clicked="OnScanClicked" />
+        </Frame>
     </Grid>
 
 </ContentPage>
