@@ -268,22 +268,6 @@
                     </StackLayout>
                 </Border>
 
-                <!-- Стрелка между бейджем и кнопкой -->
-                <Image x:Name="ArrowPointer"
-                       Grid.Column="0"
-                       Source="MainPage/strelka.png"
-                       VerticalOptions="Center"
-                       HorizontalOptions="End"
-                       Margin="0,0,-15,0"
-                       WidthRequest="30"
-                       HeightRequest="30"
-                       Opacity="0.9"
-                       ZIndex="1000">
-                    <Image.Shadow>
-                        <Shadow Brush="Black" Offset="0,2" Radius="8" Opacity="0.5"/>
-                    </Image.Shadow>
-                </Image>
-
                 <!-- Сканер справа (точная копия оригинала) -->
                 <Border x:Name="ScannerButtonOverlay"
                         Grid.Column="1"
