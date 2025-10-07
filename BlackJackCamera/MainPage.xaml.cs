@@ -84,22 +84,11 @@ public partial class MainPage : ContentPage
 
         while (_isPulsing && ScannerButtonOverlay.IsVisible)
         {
-            // Добавляем свечение через Shadow
-            ScannerButtonOverlay.Shadow = new Shadow
-            {
-                Brush = Colors.OrangeRed,
-                Offset = new Point(0, 0),
-                Radius = 30,
-                Opacity = 0.8f
-            };
+            // Пульсация: увеличение
+            await ScannerButtonOverlay.ScaleTo(1.15, 800, Easing.SinInOut);
 
-            await Task.WhenAll(
-                ScannerButtonOverlay.ScaleTo(1.15, 800, Easing.SinInOut)
-            );
-
-            await Task.WhenAll(
-                ScannerButtonOverlay.ScaleTo(1.0, 800, Easing.SinInOut)
-            );
+            // Пульсация: уменьшение
+            await ScannerButtonOverlay.ScaleTo(1.0, 800, Easing.SinInOut);
         }
     }
 

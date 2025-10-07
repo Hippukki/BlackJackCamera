@@ -267,31 +267,46 @@
                   Fill="White"
                   VerticalOptions="End"
                   HorizontalOptions="End"
-                  Margin="0,0,42,140"
-                  Opacity="0.9">
+                  Margin="0,0,42,195"
+                  Opacity="0.9"
+                  ZIndex="1000">
                 <Path.Shadow>
-                    <Shadow Brush="Black" Offset="0,2" Radius="8" Opacity="0.3"/>
+                    <Shadow Brush="Black" Offset="0,2" Radius="8" Opacity="0.5"/>
                 </Path.Shadow>
             </Path>
         </Grid>
 
         <!-- ====== SCANNER BUTTON OVERLAY (поверх spotlight) ====== -->
-        <Frame x:Name="ScannerButtonOverlay"
-               Grid.RowSpan="3"
-               IsVisible="False"
-               Margin="0,0,24,87"
-               CornerRadius="12"
-               BackgroundColor="#222224"
-               Padding="5"
-               WidthRequest="45"
-               HeightRequest="45"
-               HasShadow="False"
-               VerticalOptions="End"
-               HorizontalOptions="End">
-            <ImageButton Source="MainPage/scanner.png"
-                         BackgroundColor="Transparent"
-                         Clicked="OnScanClicked" />
-        </Frame>
+        <Border x:Name="ScannerButtonOverlay"
+                Grid.RowSpan="3"
+                IsVisible="False"
+                Margin="0,0,24,150"
+                BackgroundColor="Transparent"
+                WidthRequest="65"
+                HeightRequest="65"
+                VerticalOptions="End"
+                HorizontalOptions="End"
+                ZIndex="2000">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="16"/>
+            </Border.StrokeShape>
+            <Border.Shadow>
+                <Shadow Brush="#FF6B35" Offset="0,0" Radius="40" Opacity="0.9"/>
+            </Border.Shadow>
+
+            <Frame CornerRadius="12"
+                   BackgroundColor="#222224"
+                   Padding="5"
+                   WidthRequest="45"
+                   HeightRequest="45"
+                   HasShadow="False"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center">
+                <ImageButton Source="MainPage/scanner.png"
+                             BackgroundColor="Transparent"
+                             Clicked="OnScanClicked" />
+            </Frame>
+        </Border>
     </Grid>
 
 </ContentPage>
