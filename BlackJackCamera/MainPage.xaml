@@ -236,7 +236,7 @@
         <!-- ====== TOOLTIP ELEMENTS (поверх spotlight) ====== -->
         <Grid x:Name="TooltipContainer" Grid.RowSpan="3" IsVisible="False">
             <!-- Бейдж и кнопка на одном уровне -->
-            <Grid ColumnDefinitions="*,Auto" VerticalOptions="Start" HorizontalOptions="Fill" Margin="16,420,16,0">
+            <Grid ColumnDefinitions="*,Auto" VerticalOptions="Start" HorizontalOptions="Fill" Margin="40,425,6,0">
 
                 <!-- Tooltip бейдж слева -->
                 <Border x:Name="TooltipBadge"
@@ -267,21 +267,6 @@
                                LineBreakMode="WordWrap"/>
                     </StackLayout>
                 </Border>
-
-                <!-- Стрелка между бейджем и кнопкой -->
-                <Path x:Name="ArrowPointer"
-                      Grid.Column="0"
-                      Data="M 0,8 L 15,0 L 15,16 Z"
-                      Fill="White"
-                      VerticalOptions="Center"
-                      HorizontalOptions="End"
-                      Margin="0,0,-10,0"
-                      Opacity="0.9"
-                      ZIndex="1000">
-                    <Path.Shadow>
-                        <Shadow Brush="Black" Offset="0,2" Radius="8" Opacity="0.5"/>
-                    </Path.Shadow>
-                </Path>
 
                 <!-- Сканер справа (точная копия оригинала) -->
                 <Border x:Name="ScannerButtonOverlay"
