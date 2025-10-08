@@ -495,9 +495,9 @@ namespace BlackJackCamera
         /// </summary>
         private void UpdateStepIndicators()
         {
-            Step1Indicator.BackgroundColor = _currentStep >= 0 ? Color.FromArgb("#EF3124") : Color.FromArgb("#2B2B2D");
-            Step2Indicator.BackgroundColor = _currentStep >= 1 ? Color.FromArgb("#EF3124") : Color.FromArgb("#2B2B2D");
-            Step3Indicator.BackgroundColor = _currentStep >= 2 ? Color.FromArgb("#EF3124") : Color.FromArgb("#2B2B2D");
+            Step1Indicator.BackgroundColor = _currentStep == 0 ? Color.FromArgb("#EF3124") : Color.FromArgb("#2B2B2D");
+            Step2Indicator.BackgroundColor = _currentStep == 1 ? Color.FromArgb("#EF3124") : Color.FromArgb("#2B2B2D");
+            Step3Indicator.BackgroundColor = _currentStep == 2 ? Color.FromArgb("#EF3124") : Color.FromArgb("#2B2B2D");
         }
 
         /// <summary>
