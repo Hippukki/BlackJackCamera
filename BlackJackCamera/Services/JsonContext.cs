@@ -9,7 +9,8 @@ namespace BlackJackCamera.Services
     [JsonSerializable(typeof(DetectionResponseDto))]
     [JsonSerializable(typeof(DetectionDto))]
     [JsonSerializable(typeof(List<DetectionDto>))]
-    internal partial class JsonContext : JsonSerializerContext
+    [JsonSourceGenerationOptions(PropertyNameCaseInsensitive = true)]
+    public partial class JsonContext : JsonSerializerContext
     {
     }
 }
