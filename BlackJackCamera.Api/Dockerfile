@@ -2,9 +2,12 @@
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 
-# Копируем csproj и восстанавливаем зависимости
+# Копируем csproj и nuget.config
 COPY ["BlackJackCamera.Api.csproj", "./"]
-RUN dotnet restore "BlackJackCamera.Api.csproj"
+COPY ["nuget.config", "./"]
+# Увеличиваем таймаут NuGet для медленных соединений
+ENV NUGET_HTTPCONNECTION_TIMEOUT=300
+RUN dotnet restore "BlackJackCamera.Api.csproj" --disable-parallel
 
 # Копируем остальные файлы и собираем проект
 COPY . .
