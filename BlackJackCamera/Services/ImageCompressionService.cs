@@ -30,9 +30,10 @@ namespace BlackJackCamera.Services
                 SKBitmap resizedBitmap;
                 if (newWidth < originalBitmap.Width || newHeight < originalBitmap.Height)
                 {
+                    var samplingOptions = new SKSamplingOptions(SKFilterMode.Linear, SKMipmapMode.Linear);
                     resizedBitmap = originalBitmap.Resize(
                         new SKImageInfo(newWidth, newHeight),
-                        SKFilterQuality.High);
+                        samplingOptions);
                 }
                 else
                 {

@@ -13,7 +13,8 @@ namespace BlackJackCamera.Api.Services
         public SKBitmap ResizeImage(Stream imageStream, int width, int height)
         {
             var bitmap = SKBitmap.Decode(imageStream);
-            return bitmap.Resize(new SKImageInfo(width, height), SKFilterQuality.High);
+            var samplingOptions = new SKSamplingOptions(SKFilterMode.Linear, SKMipmapMode.Linear);
+            return bitmap.Resize(new SKImageInfo(width, height), samplingOptions);
         }
 
         /// <inheritdoc/>

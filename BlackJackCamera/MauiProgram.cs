@@ -1,6 +1,7 @@
 ﻿using BlackJackCamera.Interfaces;
 using BlackJackCamera.Services;
 using CommunityToolkit.Maui;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace BlackJackCamera

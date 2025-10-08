@@ -50,7 +50,6 @@ public partial class MainPage : ContentPage
         // Устанавливаем начальные позиции для анимации
         TooltipBadge.TranslationX = -50;
         TooltipBadge.Opacity = 0;
-        ArrowPointer.Opacity = 0;
         ScannerButtonOverlay.Scale = 0.8;
         ScannerButtonOverlay.Opacity = 0;
 
@@ -65,9 +64,6 @@ public partial class MainPage : ContentPage
         var badgeSlide = TooltipBadge.TranslateTo(0, 0, 400, Easing.CubicOut);
 
         await Task.WhenAll(badgeAnimation, badgeSlide);
-
-        // Анимация появления стрелки
-        await ArrowPointer.FadeTo(0.9, 300, Easing.CubicOut);
 
         // Анимация появления кнопки
         await Task.WhenAll(
