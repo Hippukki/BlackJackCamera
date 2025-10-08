@@ -410,16 +410,17 @@ namespace BlackJackCamera
 
             UpdateMonthlyPayment();
 
-            // Сбрасываем на первый шаг
+            // Показываем модальное окно с анимацией
+            CreditOfferModal.IsVisible = true;
+            CreditOfferModal.TranslationY = 800;
+            await Task.Delay(50);
+
+            // Сбрасываем на первый шаг ПОСЛЕ показа модального окна
             _currentStep = 0;
             ShowStep(0);
             UpdateStepIndicators();
             CreditActionButton.Text = "Выбрать сумму";
 
-            // Показываем модальное окно с анимацией
-            CreditOfferModal.IsVisible = true;
-            CreditOfferModal.TranslationY = 800;
-            await Task.Delay(50);
             await CreditOfferModal.TranslateTo(0, 0, 400, Easing.CubicOut);
         }
 
