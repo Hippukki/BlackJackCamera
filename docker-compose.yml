@@ -3,14 +3,14 @@ version: '3.8'
 services:
   blackjackcamera-api:
     build:
-      context: ./BlackJackCamera/BlackJackCamera.Api
+      context: ./BlackJackCamera.Api
       dockerfile: Dockerfile
     container_name: blackjackcamera-api
     ports:
       - "8080:8080"
     volumes:
       # Монтируем директорию с ML моделью (избегаем включения 275MB в образ)
-      - ./BlackJackCamera/BlackJackCamera/Resources/Raw:/app/Resources/Models:ro
+      - ./BlackJackCamera/Resources/Raw:/app/Resources/Models:ro
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:8080

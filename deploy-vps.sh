@@ -30,9 +30,9 @@ else
 fi
 
 # Проверка наличия модели
-if [ ! -f "BlackJackCamera/BlackJackCamera/Resources/Raw/yolov8x-oiv7.onnx" ]; then
+if [ ! -f "BlackJackCamera/Resources/Raw/yolov8x-oiv7.onnx" ]; then
     echo "❌ ОШИБКА: Модель yolov8x-oiv7.onnx не найдена!"
-    echo "Пожалуйста, поместите файл модели в BlackJackCamera/BlackJackCamera/Resources/Raw/"
+    echo "Пожалуйста, поместите файл модели в BlackJackCamera/Resources/Raw/"
     exit 1
 else
     echo "✅ Модель YOLOv8 найдена"
