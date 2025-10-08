@@ -15,15 +15,34 @@ RUN dotnet build "BlackJackCamera.Api.csproj" -c Release -o /app/build
 
 # Публикуем приложение
 FROM build AS publish
-RUN dotnet publish "BlackJackCamera.Api.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "BlackJackCamera.Api.csproj" \
+    -c Release \
+    -o /app/publish \
+    -r linux-x64 \
+    --self-contained false \
+    /p:UseAppHost=false \
+    /p:PublishReadyToRun=false
 
 # Создаем финальный образ
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
 WORKDIR /app
 
+# Устанавливаем зависимости для SkiaSharp и ONNX Runtime
+RUN apt-get update && apt-get install -y \
+    libfontconfig1 \
+    libfreetype6 \
+    libx11-6 \
+    libxcb1 \
+    libxext6 \
+    libxrender1 \
+    libc6-dev \
+    libgdiplus \
+    && rm -rf /var/lib/apt/lists/*
+
 # Устанавливаем переменные окружения
 ENV ASPNETCORE_URLS=http://+:8080
 ENV ASPNETCORE_ENVIRONMENT=Production
+ENV LD_LIBRARY_PATH=/app/runtimes/linux-x64/native:$LD_LIBRARY_PATH
 
 # Открываем порт
 EXPOSE 8080
