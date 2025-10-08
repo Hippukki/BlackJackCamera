@@ -1,0 +1,42 @@
+### Health Check
+GET http://localhost:8080/api/detection/health
+Accept: application/json
+
+###
+
+### Detect Objects (замените путь на реальное изображение)
+POST http://localhost:8080/api/detection/detect
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="test.jpg"
+Content-Type: image/jpeg
+
+< ./test-image.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###
+
+### Test with curl (copy to terminal)
+# curl -X POST http://localhost:8080/api/detection/detect \
+#   -F "file=@/path/to/your/image.jpg" \
+#   -H "Content-Type: multipart/form-data"
+
+###
+
+### Health Check (production)
+GET https://your-domain.com/api/detection/health
+Accept: application/json
+
+###
+
+### Detect Objects (production)
+POST https://your-domain.com/api/detection/detect
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="test.jpg"
+Content-Type: image/jpeg
+
+< ./test-image.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--

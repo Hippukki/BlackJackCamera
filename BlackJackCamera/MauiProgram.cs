@@ -20,10 +20,23 @@ namespace BlackJackCamera
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
+            // Load configuration
+            var assembly = typeof(MauiProgram).Assembly;
+            using var stream = assembly.GetManifestResourceStream("BlackJackCamera.appsettings.json");
+            if (stream != null)
+            {
+                var config = new ConfigurationBuilder()
+                    .AddJsonStream(stream)
+                    .Build();
+
+                builder.Configuration.AddConfiguration(config);
+            }
+
+            // Register HttpClient for API calls
+            builder.Services.AddHttpClient<IDetectionApiService, DetectionApiService>();
+
             // Register services
-            builder.Services.AddSingleton<IModelLoaderService, ModelLoaderService>();
-            builder.Services.AddSingleton<IObjectDetectionService, ObjectDetectionService>();
-            builder.Services.AddTransient<IImageProcessor, ImageProcessor>();
+            builder.Services.AddSingleton<IImageCompressionService, ImageCompressionService>();
 
             // Register pages
             builder.Services.AddSingleton<App>();

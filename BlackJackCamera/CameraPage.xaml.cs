@@ -9,42 +9,26 @@ namespace BlackJackCamera
     /// </summary>
     public partial class CameraPage : ContentPage
     {
-        private readonly IObjectDetectionService _detectionService;
-        private readonly IImageProcessor _imageProcessor;
+        private readonly IDetectionApiService _detectionApiService;
+        private readonly IImageCompressionService _imageCompressionService;
         private readonly ICameraProvider _cameraProvider;
         private bool _isFlashOn = false;
 
         /// <summary>
         /// Инициализирует новый экземпляр страницы CameraPage
         /// </summary>
-        /// <param name="detectionService">Сервис детекции объектов</param>
-        /// <param name="imageProcessor">Сервис обработки изображений</param>
-        public CameraPage(IObjectDetectionService detectionService, IImageProcessor imageProcessor, ICameraProvider cameraProvider)
+        /// <param name="detectionApiService">Сервис API детекции объектов</param>
+        /// <param name="imageCompressionService">Сервис сжатия изображений</param>
+        /// <param name="cameraProvider">Провайдер камеры</param>
+        public CameraPage(IDetectionApiService detectionApiService, IImageCompressionService imageCompressionService, ICameraProvider cameraProvider)
         {
             InitializeComponent();
 
-            _detectionService = detectionService;
-            _imageProcessor = imageProcessor;
-
-            InitializeServicesAsync();
+            _detectionApiService = detectionApiService;
+            _imageCompressionService = imageCompressionService;
+            _cameraProvider = cameraProvider;
 
             BackgroundColor = Colors.Transparent;
-            _cameraProvider = cameraProvider;
-        }
-
-        /// <summary>
-        /// Асинхронно инициализирует сервисы детекции
-        /// </summary>
-        private async void InitializeServicesAsync()
-        {
-            try
-            {
-                await _detectionService.InitializeAsync();
-            }
-            catch (Exception ex)
-            {
-                await DisplayAlert("Ошибка инициализации", ex.Message, "OK");
-            }
         }
 
         protected async override void OnNavigatedTo(NavigatedToEventArgs args)
@@ -128,20 +112,50 @@ namespace BlackJackCamera
 
 
         /// <summary>
-        /// Обрабатывает сфотографированное изображение и выполняет детекцию объектов
+        /// Обрабатывает сфотографированное изображение и выполняет детекцию объектов через API
         /// </summary>
         /// <param name="stream">Поток с изображением</param>
-        private void ProcessPhoto(Stream stream)
+        private async void ProcessPhoto(Stream stream)
         {
-            var bitmap = _imageProcessor.ResizeImage(stream, 640, 640);
-            var tensor = _imageProcessor.ConvertToTensor(bitmap);
-
-            var detections = _detectionService.DetectObjects(tensor);
-
-            MainThread.BeginInvokeOnMainThread(() =>
+            try
             {
-                DisplayDetectionResults(detections);
-            });
+                // Сжимаем изображение для оптимальной передачи по сети
+                using var compressedStream = await _imageCompressionService.CompressImageAsync(stream, 1920, 1080, 75);
+
+                // Отправляем на backend API
+                var response = await _detectionApiService.DetectObjectsAsync(compressedStream);
+
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    if (!response.Success)
+                    {
+                        HideLoadingUI();
+                        DisplayAlert("Ошибка", response.ErrorMessage ?? "Неизвестная ошибка", "OK");
+                        return;
+                    }
+
+                    // Конвертируем DTO в локальные объекты Detection
+                    var detections = response.Detections.Select(dto => new Detection
+                    {
+                        X = dto.X,
+                        Y = dto.Y,
+                        Width = dto.Width,
+                        Height = dto.Height,
+                        Confidence = dto.Confidence,
+                        ClassId = dto.ClassId
+                    }).ToList();
+
+                    DisplayDetectionResults(detections);
+                });
+            }
+            catch (Exception ex)
+            {
+                MainThread.BeginInvokeOnMainThread(async () =>
+                {
+                    HideLoadingUI();
+                    await DisplayAlert("Ошибка", $"Не удалось обработать изображение: {ex.Message}", "OK");
+                });
+            }
         }
 
         /// <summary>
@@ -169,13 +183,7 @@ namespace BlackJackCamera
                 // Если нет бейджей для распознанных объектов, показываем обычный alert
                 HideLoadingUI();
 
-                var labels = _detectionService.GetClassNames();
-                var message = "Кажется у нас пока нет подходящих по смыслу услуг для: ";
-                message += string.Join("\n", detections.Take(5).Select(d =>
-                    $"{labels[d.ClassId]}"));
-
-                if (detections.Count > 5)
-                    message += $"\n\n... и ещё {detections.Count - 5} объектов";
+                var message = "Кажется у нас пока нет подходящих по смыслу услуг для распознанных объектов.";
 
                 await DisplayAlert($"Упс!", message, "OK");
                 return;

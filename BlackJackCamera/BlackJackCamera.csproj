@@ -71,8 +71,7 @@
 		<PackageReference Include="CommunityToolkit.Maui.Camera" Version="3.0.2" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.110" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
-		<PackageReference Include="Microsoft.ML.OnnxRuntime" Version="1.22.0" />
-		<PackageReference Include="Microsoft.ML.OnnxRuntime.Managed" Version="1.22.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.0" />
 		<PackageReference Include="SkiaSharp" Version="3.119.0" />
 		<PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="3.119.0" />
 	</ItemGroup>
@@ -81,6 +80,10 @@
 	  <MauiAsset Update="Resources\Raw\labels.txt">
 	    <CopyToOutputDirectory></CopyToOutputDirectory>
 	  </MauiAsset>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="appsettings.json" />
 	</ItemGroup>
 
 	<ItemGroup>
