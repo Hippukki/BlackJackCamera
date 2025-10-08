@@ -513,13 +513,22 @@ namespace BlackJackCamera
             System.Diagnostics.Debug.WriteLine($"[CreditOffer] Setting Step2 to: {color2}");
             System.Diagnostics.Debug.WriteLine($"[CreditOffer] Setting Step3 to: {color3}");
 
-            Step1Indicator.BackgroundColor = color1;
-            Step2Indicator.BackgroundColor = color2;
-            Step3Indicator.BackgroundColor = color3;
+            // Принудительно обновляем через Dispatcher на UI потоке
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                Step1Indicator.BackgroundColor = color1;
+                Step2Indicator.BackgroundColor = color2;
+                Step3Indicator.BackgroundColor = color3;
 
-            System.Diagnostics.Debug.WriteLine($"[CreditOffer] After setting - Step1: {Step1Indicator.BackgroundColor}");
-            System.Diagnostics.Debug.WriteLine($"[CreditOffer] After setting - Step2: {Step2Indicator.BackgroundColor}");
-            System.Diagnostics.Debug.WriteLine($"[CreditOffer] After setting - Step3: {Step3Indicator.BackgroundColor}");
+                // Принудительная перерисовка
+                Step1Indicator.InvalidateMeasure();
+                Step2Indicator.InvalidateMeasure();
+                Step3Indicator.InvalidateMeasure();
+
+                System.Diagnostics.Debug.WriteLine($"[CreditOffer] After setting - Step1: {Step1Indicator.BackgroundColor}");
+                System.Diagnostics.Debug.WriteLine($"[CreditOffer] After setting - Step2: {Step2Indicator.BackgroundColor}");
+                System.Diagnostics.Debug.WriteLine($"[CreditOffer] After setting - Step3: {Step3Indicator.BackgroundColor}");
+            });
         }
 
         /// <summary>
