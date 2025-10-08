@@ -64,6 +64,12 @@
 
 		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+
+		<!-- Исключаем ML модель и labels - они нужны только для Backend -->
+		<MauiAsset Remove="Resources\Raw\yolov8x-oiv7.onnx" />
+		<MauiAsset Remove="Resources\Raw\labels.txt" />
+		<None Remove="Resources\Raw\yolov8x-oiv7.onnx" />
+		<None Remove="Resources\Raw\labels.txt" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -75,12 +81,6 @@
 		<PackageReference Include="Microsoft.Extensions.Http" Version="9.0.0" />
 		<PackageReference Include="SkiaSharp" Version="3.119.0" />
 		<PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="3.119.0" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <MauiAsset Update="Resources\Raw\labels.txt">
-	    <CopyToOutputDirectory></CopyToOutputDirectory>
-	  </MauiAsset>
 	</ItemGroup>
 
 	<ItemGroup>
