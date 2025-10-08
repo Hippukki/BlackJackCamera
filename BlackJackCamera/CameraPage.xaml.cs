@@ -453,10 +453,13 @@ namespace BlackJackCamera
         /// </summary>
         private async void OnCreditActionButtonClicked(object sender, EventArgs e)
         {
+            System.Diagnostics.Debug.WriteLine($"[CreditOffer] Button clicked. Current step before: {_currentStep}");
+
             if (_currentStep == 0)
             {
                 // Шаг 1 -> Шаг 2 (Выбор суммы)
                 _currentStep = 1;
+                System.Diagnostics.Debug.WriteLine($"[CreditOffer] Moving to step 1 (index 1)");
                 ShowStep(1);
                 UpdateStepIndicators();
                 CreditActionButton.Text = "Отправить заявку";
@@ -465,6 +468,7 @@ namespace BlackJackCamera
             {
                 // Шаг 2 -> Шаг 3 (Подтверждение)
                 _currentStep = 2;
+                System.Diagnostics.Debug.WriteLine($"[CreditOffer] Moving to step 2 (index 2)");
                 ShowStep(2);
                 UpdateStepIndicators();
                 CreditActionButton.Text = "OK";
@@ -477,8 +481,11 @@ namespace BlackJackCamera
             else if (_currentStep == 2)
             {
                 // Шаг 3 -> Закрыть модальное окно
+                System.Diagnostics.Debug.WriteLine($"[CreditOffer] Closing offer");
                 await HideCreditOffer();
             }
+
+            System.Diagnostics.Debug.WriteLine($"[CreditOffer] Button clicked finished. Current step after: {_currentStep}");
         }
 
         /// <summary>
@@ -496,9 +503,23 @@ namespace BlackJackCamera
         /// </summary>
         private void UpdateStepIndicators()
         {
-            Step1Indicator.BackgroundColor = _currentStep == 0 ? Color.FromArgb("#EF3124") : Color.FromArgb("#2B2B2D");
-            Step2Indicator.BackgroundColor = _currentStep == 1 ? Color.FromArgb("#EF3124") : Color.FromArgb("#2B2B2D");
-            Step3Indicator.BackgroundColor = _currentStep == 2 ? Color.FromArgb("#EF3124") : Color.FromArgb("#2B2B2D");
+            System.Diagnostics.Debug.WriteLine($"[CreditOffer] UpdateStepIndicators called. Current step: {_currentStep}");
+
+            var color1 = _currentStep == 0 ? Color.FromArgb("#EF3124") : Color.FromArgb("#2B2B2D");
+            var color2 = _currentStep == 1 ? Color.FromArgb("#EF3124") : Color.FromArgb("#2B2B2D");
+            var color3 = _currentStep == 2 ? Color.FromArgb("#EF3124") : Color.FromArgb("#2B2B2D");
+
+            System.Diagnostics.Debug.WriteLine($"[CreditOffer] Setting Step1 to: {color1}");
+            System.Diagnostics.Debug.WriteLine($"[CreditOffer] Setting Step2 to: {color2}");
+            System.Diagnostics.Debug.WriteLine($"[CreditOffer] Setting Step3 to: {color3}");
+
+            Step1Indicator.BackgroundColor = color1;
+            Step2Indicator.BackgroundColor = color2;
+            Step3Indicator.BackgroundColor = color3;
+
+            System.Diagnostics.Debug.WriteLine($"[CreditOffer] After setting - Step1: {Step1Indicator.BackgroundColor}");
+            System.Diagnostics.Debug.WriteLine($"[CreditOffer] After setting - Step2: {Step2Indicator.BackgroundColor}");
+            System.Diagnostics.Debug.WriteLine($"[CreditOffer] After setting - Step3: {Step3Indicator.BackgroundColor}");
         }
 
         /// <summary>
