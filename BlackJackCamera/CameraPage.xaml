@@ -176,5 +176,340 @@
       </Grid>
     </Border>
 
+    <!-- Credit Offer Modal (поверх всех элементов) -->
+    <Border x:Name="CreditOfferModal"
+            Grid.RowSpan="3"
+            VerticalOptions="End"
+            HorizontalOptions="Fill"
+            Margin="-1,0,-1,0"
+            IsVisible="False"
+            BackgroundColor="#0B0B0C">
+      <Border.StrokeShape>
+        <RoundRectangle CornerRadius="28,28,0,0"/>
+      </Border.StrokeShape>
+      <Border.Shadow>
+        <Shadow Brush="Black" Offset="0,-8" Radius="32" Opacity="0.7"/>
+      </Border.Shadow>
+
+      <Grid RowDefinitions="Auto,Auto,*,Auto" Padding="20,20,20,30">
+
+        <!-- Полоска для захвата (Handle) -->
+        <BoxView Grid.Row="0"
+                 WidthRequest="48"
+                 HeightRequest="4"
+                 BackgroundColor="#60FFFFFF"
+                 CornerRadius="2"
+                 Margin="0,0,0,20"
+                 HorizontalOptions="Center"/>
+
+        <!-- Индикатор шагов -->
+        <Grid Grid.Row="1" ColumnDefinitions="*,*,*" ColumnSpacing="8" Margin="0,0,0,24">
+          <Border Grid.Column="0">
+            <Border.StrokeShape>
+              <RoundRectangle CornerRadius="8"/>
+            </Border.StrokeShape>
+            <BoxView x:Name="Step1Indicator" BackgroundColor="#EF3124" HeightRequest="4" CornerRadius="2"/>
+          </Border>
+
+          <Border Grid.Column="1">
+            <Border.StrokeShape>
+              <RoundRectangle CornerRadius="8"/>
+            </Border.StrokeShape>
+            <BoxView x:Name="Step2Indicator" BackgroundColor="#2B2B2D" HeightRequest="4" CornerRadius="2"/>
+          </Border>
+
+          <Border Grid.Column="2">
+            <Border.StrokeShape>
+              <RoundRectangle CornerRadius="8"/>
+            </Border.StrokeShape>
+            <BoxView x:Name="Step3Indicator" BackgroundColor="#2B2B2D" HeightRequest="4" CornerRadius="2"/>
+          </Border>
+        </Grid>
+
+        <!-- Контент шагов (CarouselView) -->
+        <CarouselView x:Name="StepsCarousel"
+                      Grid.Row="2"
+                      IsSwipeEnabled="False"
+                      VerticalOptions="FillAndExpand"
+                      HorizontalScrollBarVisibility="Never"
+                      Loop="False">
+          <CarouselView.ItemsSource>
+            <x:Array Type="{x:Type ContentView}">
+
+              <!-- ШАГ 1: Одобрение кредита -->
+              <ContentView>
+                <ScrollView VerticalScrollBarVisibility="Never">
+                  <StackLayout Spacing="20" VerticalOptions="Start" Padding="0,10">
+                    <Label Text="Шаг 1 из 3"
+                           TextColor="#8E8E93"
+                           FontSize="14"
+                           HorizontalTextAlignment="Center"/>
+
+                    <Border WidthRequest="70"
+                            HeightRequest="70"
+                            HorizontalOptions="Center"
+                            BackgroundColor="#1B3A1B">
+                      <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="35"/>
+                      </Border.StrokeShape>
+                      <Label Text="✓"
+                             TextColor="#4CAF50"
+                             FontSize="42"
+                             FontAttributes="Bold"
+                             HorizontalOptions="Center"
+                             VerticalOptions="Center"/>
+                    </Border>
+
+                    <StackLayout Spacing="10">
+                      <Label Text="Кредит одобрен!"
+                             TextColor="White"
+                             FontSize="26"
+                             FontAttributes="Bold"
+                             HorizontalTextAlignment="Center"/>
+
+                      <Label x:Name="OfferTextLabel"
+                             Text="Вам одобрен кредит на покупку ноутбука на сумму до 136 000 ₽"
+                             TextColor="#E6E6E6"
+                             FontSize="16"
+                             LineBreakMode="WordWrap"
+                             HorizontalTextAlignment="Center"
+                             Margin="0,0,0,6"/>
+
+                      <Label Text="Не упустите возможность и оформите прямо сейчас!"
+                             TextColor="#8E8E93"
+                             FontSize="14"
+                             LineBreakMode="WordWrap"
+                             HorizontalTextAlignment="Center"/>
+                    </StackLayout>
+
+                    <Border BackgroundColor="#141417"
+                           Padding="16"
+                           Margin="0,8,0,0">
+                      <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="16"/>
+                      </Border.StrokeShape>
+                      <StackLayout Spacing="14">
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                          <Label Grid.Column="0" Text="💳" FontSize="22"/>
+                          <Label Grid.Column="1"
+                                 Text="Без первоначального взноса"
+                                 TextColor="White"
+                                 FontSize="14"
+                                 VerticalOptions="Center"/>
+                        </Grid>
+
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                          <Label Grid.Column="0" Text="⚡" FontSize="22"/>
+                          <Label Grid.Column="1"
+                                 Text="Решение за 2 минуты"
+                                 TextColor="White"
+                                 FontSize="14"
+                                 VerticalOptions="Center"/>
+                        </Grid>
+
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                          <Label Grid.Column="0" Text="📱" FontSize="22"/>
+                          <Label Grid.Column="1"
+                                 Text="Оформление онлайн"
+                                 TextColor="White"
+                                 FontSize="14"
+                                 VerticalOptions="Center"/>
+                        </Grid>
+                      </StackLayout>
+                    </Border>
+                  </StackLayout>
+                </ScrollView>
+              </ContentView>
+
+              <!-- ШАГ 2: Выбор суммы -->
+              <ContentView>
+                <ScrollView VerticalScrollBarVisibility="Never">
+                  <StackLayout Spacing="20" VerticalOptions="Start" Padding="0,10">
+                    <Label Text="Шаг 2 из 3"
+                           TextColor="#8E8E93"
+                           FontSize="14"
+                           HorizontalTextAlignment="Center"/>
+
+                    <Label Text="Выберите сумму кредита"
+                           TextColor="White"
+                           FontSize="24"
+                           FontAttributes="Bold"
+                           HorizontalTextAlignment="Center"/>
+
+                    <Border BackgroundColor="#141417"
+                            Padding="20,16"
+                            HorizontalOptions="Center">
+                      <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="18"/>
+                      </Border.StrokeShape>
+                      <Border.Shadow>
+                        <Shadow Brush="#EF3124" Offset="0,4" Radius="20" Opacity="0.3"/>
+                      </Border.Shadow>
+
+                      <StackLayout Spacing="6" HorizontalOptions="Center">
+                        <Label x:Name="SelectedAmountLabel"
+                               Text="75 000 ₽"
+                               TextColor="#EF3124"
+                               FontSize="36"
+                               FontAttributes="Bold"
+                               HorizontalTextAlignment="Center"/>
+                        <Label Text="Выбранная сумма"
+                               TextColor="#8E8E93"
+                               FontSize="12"
+                               HorizontalTextAlignment="Center"/>
+                      </StackLayout>
+                    </Border>
+
+                    <StackLayout Spacing="10" Margin="0,16,0,0">
+                      <Slider x:Name="AmountSlider"
+                              Minimum="15000"
+                              Maximum="136000"
+                              Value="75000"
+                              MinimumTrackColor="#EF3124"
+                              MaximumTrackColor="#2B2B2D"
+                              ThumbColor="#EF3124"
+                              ValueChanged="OnAmountChanged"/>
+
+                      <Grid ColumnDefinitions="*,*" Margin="0,4,0,0">
+                        <Label Grid.Column="0"
+                               x:Name="MinAmountLabel"
+                               Text="15 000 ₽"
+                               TextColor="#8E8E93"
+                               FontSize="12"
+                               HorizontalOptions="Start"/>
+                        <Label Grid.Column="1"
+                               x:Name="MaxAmountLabel"
+                               Text="136 000 ₽"
+                               TextColor="#8E8E93"
+                               FontSize="12"
+                               HorizontalOptions="End"/>
+                      </Grid>
+                    </StackLayout>
+
+                    <Border BackgroundColor="#141417"
+                           Padding="16"
+                           Margin="0,8,0,0">
+                      <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="16"/>
+                      </Border.StrokeShape>
+                      <Grid RowDefinitions="Auto,Auto" RowSpacing="10">
+                        <StackLayout Grid.Row="0" Orientation="Horizontal" HorizontalOptions="Center">
+                          <Label Text="Ежемесячный платеж: "
+                                 TextColor="#8E8E93"
+                                 FontSize="14"/>
+                          <Label x:Name="MonthlyPaymentLabel"
+                                 Text="≈ 3 125 ₽"
+                                 TextColor="White"
+                                 FontSize="14"
+                                 FontAttributes="Bold"/>
+                        </StackLayout>
+
+                        <Label Grid.Row="1"
+                               Text="Срок: 24 месяца • Ставка: 14.9%"
+                               TextColor="#8E8E93"
+                               FontSize="12"
+                               HorizontalTextAlignment="Center"/>
+                      </Grid>
+                    </Border>
+                  </StackLayout>
+                </ScrollView>
+              </ContentView>
+
+              <!-- ШАГ 3: Подтверждение -->
+              <ContentView>
+                <ScrollView VerticalScrollBarVisibility="Never">
+                  <StackLayout Spacing="20" VerticalOptions="Start" Padding="0,10">
+                    <Label Text="Шаг 3 из 3"
+                           TextColor="#8E8E93"
+                           FontSize="14"
+                           HorizontalTextAlignment="Center"/>
+
+                    <Border WidthRequest="70"
+                            HeightRequest="70"
+                            HorizontalOptions="Center"
+                            BackgroundColor="#1B1B3A">
+                      <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="35"/>
+                      </Border.StrokeShape>
+                      <Label Text="📤"
+                             FontSize="38"
+                             HorizontalOptions="Center"
+                             VerticalOptions="Center"/>
+                    </Border>
+
+                    <StackLayout Spacing="10">
+                      <Label Text="Заявка принята!"
+                             TextColor="White"
+                             FontSize="26"
+                             FontAttributes="Bold"
+                             HorizontalTextAlignment="Center"/>
+
+                      <Label Text="Ваша заявка будет рассмотрена в ближайшее время"
+                             TextColor="#E6E6E6"
+                             FontSize="16"
+                             LineBreakMode="WordWrap"
+                             HorizontalTextAlignment="Center"
+                             Margin="0,0,0,6"/>
+
+                      <Label Text="По готовности придет push-уведомление"
+                             TextColor="#8E8E93"
+                             FontSize="14"
+                             LineBreakMode="WordWrap"
+                             HorizontalTextAlignment="Center"/>
+                    </StackLayout>
+
+                    <Border BackgroundColor="#141417"
+                           Padding="16"
+                           Margin="0,8,0,0">
+                      <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="16"/>
+                      </Border.StrokeShape>
+                      <StackLayout Spacing="12">
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                          <Label Grid.Column="0" Text="Номер заявки:" TextColor="#8E8E93" FontSize="13"/>
+                          <Label Grid.Column="1" x:Name="ApplicationNumberLabel" Text="#2024-12345678" TextColor="White" FontSize="13" FontAttributes="Bold"/>
+                        </Grid>
+
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                          <Label Grid.Column="0" Text="Сумма кредита:" TextColor="#8E8E93" FontSize="13"/>
+                          <Label Grid.Column="1" x:Name="FinalAmountLabel" Text="75 000 ₽" TextColor="White" FontSize="13" FontAttributes="Bold"/>
+                        </Grid>
+
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                          <Label Grid.Column="0" Text="Срок рассмотрения:" TextColor="#8E8E93" FontSize="13"/>
+                          <Label Grid.Column="1" Text="до 30 минут" TextColor="White" FontSize="13" FontAttributes="Bold"/>
+                        </Grid>
+                      </StackLayout>
+                    </Border>
+
+                    <Label Text="Следить за статусом заявки можно в разделе 'Кредиты'"
+                           TextColor="#8E8E93"
+                           FontSize="12"
+                           LineBreakMode="WordWrap"
+                           HorizontalTextAlignment="Center"
+                           Margin="0,8,0,0"/>
+                  </StackLayout>
+                </ScrollView>
+              </ContentView>
+
+            </x:Array>
+          </CarouselView.ItemsSource>
+        </CarouselView>
+
+        <!-- Кнопка действия -->
+        <Button x:Name="CreditActionButton"
+                Grid.Row="3"
+                Text="Выбрать сумму"
+                BackgroundColor="#EF3124"
+                TextColor="White"
+                FontSize="16"
+                FontAttributes="Bold"
+                CornerRadius="14"
+                HeightRequest="52"
+                Clicked="OnCreditActionButtonClicked"
+                Margin="0,16,0,0"/>
+      </Grid>
+    </Border>
+
   </Grid>
 </ContentPage>

@@ -14,6 +14,12 @@ namespace BlackJackCamera
         private readonly ICameraProvider _cameraProvider;
         private bool _isFlashOn = false;
 
+        // Кредитный оффер
+        private int _currentStep = 0;
+        private int _maxCreditAmount = 136000;
+        private int _selectedCreditAmount = 75000;
+        private readonly int[] _creditAmounts = new[] { 85000, 120000, 136000, 98000, 150000, 110000 };
+
         /// <summary>
         /// Инициализирует новый экземпляр страницы CameraPage
         /// </summary>
@@ -142,7 +148,8 @@ namespace BlackJackCamera
                         Width = dto.Width,
                         Height = dto.Height,
                         Confidence = dto.Confidence,
-                        ClassId = dto.ClassId
+                        ClassId = dto.ClassId,
+                        ClassName = dto.ClassName
                     }).ToList();
 
                     DisplayDetectionResults(detections);
@@ -175,6 +182,16 @@ namespace BlackJackCamera
                 return;
             }
 
+            // Проверяем, есть ли категория "Ноутбук" среди распознанных объектов
+            var categories = GetCategoriesFromDetections(detections);
+
+            if (categories.Contains("Ноутбук"))
+            {
+                // Показываем кредитный оффер вместо обычных бейджей
+                ShowCreditOffer();
+                return;
+            }
+
             // Получаем бейджи для распознанных объектов
             var badges = CategoryBadgeMapper.GetBadgesForDetections(detections);
 
@@ -194,6 +211,35 @@ namespace BlackJackCamera
 
             // Отображаем бейджи
             ShowBadges(badges);
+        }
+
+        /// <summary>
+        /// Получает список категорий из распознанных объектов
+        /// </summary>
+        /// <param name="detections">Список распознанных объектов</param>
+        /// <returns>Набор уникальных категорий</returns>
+        private HashSet<string> GetCategoriesFromDetections(List<Detection> detections)
+        {
+            var categories = new HashSet<string>();
+
+            // Используем рефлексию для доступа к приватному словарю маппинга
+            var mapperType = typeof(CategoryBadgeMapper);
+            var classToCategory = mapperType.GetField("_classToCategory",
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static)?
+                .GetValue(null) as Dictionary<int, string>;
+
+            if (classToCategory != null)
+            {
+                foreach (var detection in detections)
+                {
+                    if (classToCategory.TryGetValue(detection.ClassId, out var category))
+                    {
+                        categories.Add(category);
+                    }
+                }
+            }
+
+            return categories;
         }
 
         /// <summary>
@@ -342,6 +388,123 @@ namespace BlackJackCamera
                 FlashButton.Source = "CameraPage/icon_flash_off.svg";
             }
         }
+
+        #region Credit Offer
+
+        /// <summary>
+        /// Показывает кредитный оффер для категории "Ноутбук"
+        /// </summary>
+        private async void ShowCreditOffer()
+        {
+            // Выбираем случайную сумму кредита
+            var random = new Random();
+            _maxCreditAmount = _creditAmounts[random.Next(_creditAmounts.Length)];
+            _selectedCreditAmount = _maxCreditAmount / 2;
+
+            // Обновляем UI
+            OfferTextLabel.Text = $"Вам одобрен кредит на покупку ноутбука на сумму до {_maxCreditAmount:N0} ₽";
+            AmountSlider.Maximum = _maxCreditAmount;
+            AmountSlider.Value = _selectedCreditAmount;
+            MaxAmountLabel.Text = $"{_maxCreditAmount:N0} ₽";
+            SelectedAmountLabel.Text = $"{_selectedCreditAmount:N0} ₽";
+
+            UpdateMonthlyPayment();
+
+            // Сбрасываем на первый шаг
+            _currentStep = 0;
+            StepsCarousel.Position = 0;
+            UpdateStepIndicators();
+            CreditActionButton.Text = "Выбрать сумму";
+
+            // Показываем модальное окно с анимацией
+            CreditOfferModal.IsVisible = true;
+            CreditOfferModal.TranslationY = 800;
+            await Task.Delay(50);
+            await CreditOfferModal.TranslateTo(0, 0, 400, Easing.CubicOut);
+        }
+
+        /// <summary>
+        /// Обработчик изменения значения слайдера
+        /// </summary>
+        private void OnAmountChanged(object sender, ValueChangedEventArgs e)
+        {
+            _selectedCreditAmount = (int)Math.Round(e.NewValue / 1000) * 1000; // Округляем до тысяч
+            SelectedAmountLabel.Text = $"{_selectedCreditAmount:N0} ₽";
+            UpdateMonthlyPayment();
+        }
+
+        /// <summary>
+        /// Обновляет отображение ежемесячного платежа
+        /// </summary>
+        private void UpdateMonthlyPayment()
+        {
+            const double rate = 0.149; // 14.9% годовых
+            const int months = 24;
+
+            double monthlyRate = rate / 12;
+            double monthlyPayment = _selectedCreditAmount * (monthlyRate * Math.Pow(1 + monthlyRate, months)) / (Math.Pow(1 + monthlyRate, months) - 1);
+
+            MonthlyPaymentLabel.Text = $"≈ {monthlyPayment:N0} ₽";
+        }
+
+        /// <summary>
+        /// Обработчик нажатия кнопки действия (переключение шагов)
+        /// </summary>
+        private async void OnCreditActionButtonClicked(object sender, EventArgs e)
+        {
+            if (_currentStep == 0)
+            {
+                // Шаг 1 -> Шаг 2 (Выбор суммы)
+                _currentStep = 1;
+                StepsCarousel.Position = 1;
+                UpdateStepIndicators();
+                CreditActionButton.Text = "Отправить заявку";
+            }
+            else if (_currentStep == 1)
+            {
+                // Шаг 2 -> Шаг 3 (Подтверждение)
+                _currentStep = 2;
+                StepsCarousel.Position = 2;
+                UpdateStepIndicators();
+                CreditActionButton.Text = "OK";
+
+                // Генерируем номер заявки
+                var applicationNumber = $"#2024-{random.Next(10000000, 99999999)}";
+                ApplicationNumberLabel.Text = applicationNumber;
+                FinalAmountLabel.Text = $"{_selectedCreditAmount:N0} ₽";
+            }
+            else if (_currentStep == 2)
+            {
+                // Шаг 3 -> Закрыть модальное окно
+                await HideCreditOffer();
+            }
+        }
+
+        /// <summary>
+        /// Обновляет индикаторы шагов
+        /// </summary>
+        private void UpdateStepIndicators()
+        {
+            Step1Indicator.BackgroundColor = _currentStep >= 0 ? Color.FromArgb("#EF3124") : Color.FromArgb("#2B2B2D");
+            Step2Indicator.BackgroundColor = _currentStep >= 1 ? Color.FromArgb("#EF3124") : Color.FromArgb("#2B2B2D");
+            Step3Indicator.BackgroundColor = _currentStep >= 2 ? Color.FromArgb("#EF3124") : Color.FromArgb("#2B2B2D");
+        }
+
+        /// <summary>
+        /// Скрывает кредитный оффер
+        /// </summary>
+        private async Task HideCreditOffer()
+        {
+            await CreditOfferModal.TranslateTo(0, 800, 300, Easing.CubicIn);
+            CreditOfferModal.IsVisible = false;
+
+            // Сбрасываем UI камеры
+            HideLoadingUI();
+        }
+
+        private Random random = new Random();
+
+        #endregion
 
     }
 }
