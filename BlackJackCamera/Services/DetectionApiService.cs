@@ -54,10 +54,7 @@ namespace BlackJackCamera.Services
                 }
 
                 var json = await response.Content.ReadAsStringAsync();
-                var result = JsonSerializer.Deserialize<DetectionResponseDto>(json, new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                });
+                var result = JsonSerializer.Deserialize(json, JsonContext.Default.DetectionResponseDto);
 
                 _logger.LogInformation("Detection completed. Found {Count} objects in {Time}ms",
                     result?.Detections.Count ?? 0, result?.ProcessingTimeMs ?? 0);
