@@ -183,7 +183,10 @@ namespace BlackJackCamera
                 // Если нет бейджей для распознанных объектов, показываем обычный alert
                 HideLoadingUI();
 
-                var message = "Кажется у нас пока нет подходящих по смыслу услуг для распознанных объектов.";
+                var message = "Кажется у нас пока нет услуг для: ";
+
+                foreach (var detectClass in detections)
+                    message += $"{detectClass.ClassName}, ";
 
                 await DisplayAlert($"Упс!", message, "OK");
                 return;

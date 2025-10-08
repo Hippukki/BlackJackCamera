@@ -34,5 +34,10 @@ namespace BlackJackCamera
         /// ID класса обнаруженного объекта
         /// </summary>
         public int ClassId { get; set; }
+
+        /// <summary>
+        /// Название класса объекта
+        /// </summary>
+        public string? ClassName { get; set; }
     }
 }
