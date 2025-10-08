@@ -226,18 +226,11 @@
           </Border>
         </Grid>
 
-        <!-- Контент шагов (CarouselView) -->
-        <CarouselView x:Name="StepsCarousel"
-                      Grid.Row="2"
-                      IsSwipeEnabled="False"
-                      VerticalOptions="FillAndExpand"
-                      HorizontalScrollBarVisibility="Never"
-                      Loop="False">
-          <CarouselView.ItemsSource>
-            <x:Array Type="{x:Type ContentView}">
+        <!-- Контент шагов (Grid с переключением видимости) -->
+        <Grid Grid.Row="2" VerticalOptions="FillAndExpand">
 
-              <!-- ШАГ 1: Одобрение кредита -->
-              <ContentView>
+          <!-- ШАГ 1: Одобрение кредита -->
+          <Grid x:Name="Step1Content" IsVisible="True">
                 <ScrollView VerticalScrollBarVisibility="Never">
                   <StackLayout Spacing="20" VerticalOptions="Start" Padding="0,10">
                     <Label Text="Шаг 1 из 3"
@@ -319,10 +312,10 @@
                     </Border>
                   </StackLayout>
                 </ScrollView>
-              </ContentView>
+          </Grid>
 
-              <!-- ШАГ 2: Выбор суммы -->
-              <ContentView>
+          <!-- ШАГ 2: Выбор суммы -->
+          <Grid x:Name="Step2Content" IsVisible="False">
                 <ScrollView VerticalScrollBarVisibility="Never">
                   <StackLayout Spacing="20" VerticalOptions="Start" Padding="0,10">
                     <Label Text="Шаг 2 из 3"
@@ -413,10 +406,10 @@
                     </Border>
                   </StackLayout>
                 </ScrollView>
-              </ContentView>
+          </Grid>
 
-              <!-- ШАГ 3: Подтверждение -->
-              <ContentView>
+          <!-- ШАГ 3: Подтверждение -->
+          <Grid x:Name="Step3Content" IsVisible="False">
                 <ScrollView VerticalScrollBarVisibility="Never">
                   <StackLayout Spacing="20" VerticalOptions="Start" Padding="0,10">
                     <Label Text="Шаг 3 из 3"
@@ -490,11 +483,9 @@
                            Margin="0,8,0,0"/>
                   </StackLayout>
                 </ScrollView>
-              </ContentView>
+          </Grid>
 
-            </x:Array>
-          </CarouselView.ItemsSource>
-        </CarouselView>
+        </Grid>
 
         <!-- Кнопка действия -->
         <Button x:Name="CreditActionButton"

@@ -412,7 +412,7 @@ namespace BlackJackCamera
 
             // Сбрасываем на первый шаг
             _currentStep = 0;
-            StepsCarousel.Position = 0;
+            ShowStep(0);
             UpdateStepIndicators();
             CreditActionButton.Text = "Выбрать сумму";
 
@@ -456,7 +456,7 @@ namespace BlackJackCamera
             {
                 // Шаг 1 -> Шаг 2 (Выбор суммы)
                 _currentStep = 1;
-                StepsCarousel.Position = 1;
+                ShowStep(1);
                 UpdateStepIndicators();
                 CreditActionButton.Text = "Отправить заявку";
             }
@@ -464,7 +464,7 @@ namespace BlackJackCamera
             {
                 // Шаг 2 -> Шаг 3 (Подтверждение)
                 _currentStep = 2;
-                StepsCarousel.Position = 2;
+                ShowStep(2);
                 UpdateStepIndicators();
                 CreditActionButton.Text = "OK";
 
@@ -478,6 +478,16 @@ namespace BlackJackCamera
                 // Шаг 3 -> Закрыть модальное окно
                 await HideCreditOffer();
             }
+        }
+
+        /// <summary>
+        /// Показывает указанный шаг и скрывает остальные
+        /// </summary>
+        private void ShowStep(int stepIndex)
+        {
+            Step1Content.IsVisible = stepIndex == 0;
+            Step2Content.IsVisible = stepIndex == 1;
+            Step3Content.IsVisible = stepIndex == 2;
         }
 
         /// <summary>
