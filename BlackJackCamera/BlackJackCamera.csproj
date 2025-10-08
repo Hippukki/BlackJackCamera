@@ -33,13 +33,23 @@
 		<!-- To develop, package, and publish an app to the Microsoft Store, see: https://aka.ms/MauiTemplateUnpackaged -->
 		<WindowsPackageType>None</WindowsPackageType>
 
-    <AndroidKeyStore>true</AndroidKeyStore>
-    <AndroidSigningKeyStore>blackjack.keystore</AndroidSigningKeyStore>
-    <AndroidSigningKeyAlias>blackjackalias</AndroidSigningKeyAlias>
-    <AndroidSigningKeyPass>Yph3cAUW</AndroidSigningKeyPass>
-    <AndroidSigningStorePass>Yph3cAUW</AndroidSigningStorePass>
+		<!-- Android Signing -->
+		<AndroidKeyStore>true</AndroidKeyStore>
+		<AndroidSigningKeyStore>blackjack.keystore</AndroidSigningKeyStore>
+		<AndroidSigningKeyAlias>blackjackalias</AndroidSigningKeyAlias>
+		<AndroidSigningKeyPass>Yph3cAUW</AndroidSigningKeyPass>
+		<AndroidSigningStorePass>Yph3cAUW</AndroidSigningStorePass>
+		<AndroidPackageFormat>apk</AndroidPackageFormat>
+		<AndroidPackageFileName>BlackJackCamera.apk</AndroidPackageFileName>
 
-    <AndroidPackageFileName>BlackJackCamera.apk</AndroidPackageFileName>
+		<!-- Оптимизация размера APK для Release -->
+		<!-- Поддержка только ARM архитектуры (реальные устройства) -->
+		<RuntimeIdentifiers Condition="'$(TargetFramework)' == 'net9.0-android' and '$(Configuration)' == 'Release'">android-arm64</RuntimeIdentifiers>
+		<!-- Включить линковку для уменьшения размера -->
+		<AndroidLinkMode Condition="'$(Configuration)' == 'Release'">Full</AndroidLinkMode>
+		<!-- Отключить debug символы в Release -->
+		<DebugType Condition="'$(Configuration)' == 'Release'">None</DebugType>
+		<DebugSymbols Condition="'$(Configuration)' == 'Release'">false</DebugSymbols>
 
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">15.0</SupportedOSPlatformVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">15.0</SupportedOSPlatformVersion>
