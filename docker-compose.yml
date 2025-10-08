@@ -2,6 +2,10 @@ version: '3.8'
 
 services:
   blackjackcamera-api:
+    # Для использования pre-built образа из Docker Hub раскомментируйте следующую строку:
+    # image: YOUR_DOCKERHUB_USERNAME/blackjackcamera-api:latest
+
+    # Для локальной сборки используйте build (требует доступа к NuGet):
     build:
       context: ./BlackJackCamera.Api
       dockerfile: Dockerfile

@@ -1,8 +1,47 @@
 # Быстрый старт
 
-## 1️⃣ Запуск Backend (API)
+## ⚠️ Развертывание через Docker Hub (если нет доступа к NuGet)
 
-### Вариант А: Docker (рекомендуется)
+### Шаг 1: Сборка на Windows (локально)
+
+```bash
+cd E:\BlackJackCamera\BlackJackCamera
+docker build -t YOUR_USERNAME/blackjackcamera-api:latest -f BlackJackCamera.Api/Dockerfile BlackJackCamera.Api
+docker login
+docker push YOUR_USERNAME/blackjackcamera-api:latest
+```
+
+### Шаг 2: На сервере
+
+```bash
+git clone YOUR_REPO_URL
+cd BlackJackCamera
+
+# Установка Git LFS для загрузки модели
+sudo apt install git-lfs
+git lfs install
+git lfs pull
+
+# Редактируем docker-compose.yml
+nano docker-compose.yml
+# Раскомментируйте: image: YOUR_USERNAME/blackjackcamera-api:latest
+# Закомментируйте секцию build:
+
+# Запуск
+docker-compose pull
+docker-compose up -d
+
+# Проверка
+curl http://localhost:8080/api/detection/health
+```
+
+**Подробнее:** [DEPLOYMENT_DOCKERHUB.md](DEPLOYMENT_DOCKERHUB.md)
+
+---
+
+## 1️⃣ Запуск Backend (API) - Локальная сборка
+
+### Вариант А: Docker (требует доступ к NuGet.org)
 
 ```bash
 # В корне проекта

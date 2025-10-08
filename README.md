@@ -91,7 +91,7 @@ dotnet run
 API: `http://localhost:5000`
 Swagger: `http://localhost:5000/swagger`
 
-#### Docker
+#### Docker (локальная сборка)
 
 ```bash
 cd BlackJackCamera
@@ -99,6 +99,32 @@ docker-compose up -d
 ```
 
 API: `http://localhost:8080`
+
+#### Docker (через Docker Hub)
+
+**Если на сервере нет доступа к NuGet.org**, используйте pre-built образ:
+
+1. **На Windows (локально):**
+   ```bash
+   docker build -t YOUR_USERNAME/blackjackcamera-api:latest -f BlackJackCamera.Api/Dockerfile BlackJackCamera.Api
+   docker login
+   docker push YOUR_USERNAME/blackjackcamera-api:latest
+   ```
+
+2. **На сервере:** измените `docker-compose.yml`:
+   ```yaml
+   services:
+     blackjackcamera-api:
+       image: YOUR_USERNAME/blackjackcamera-api:latest
+   ```
+
+   Затем:
+   ```bash
+   docker-compose pull
+   docker-compose up -d
+   ```
+
+Подробнее: [DEPLOYMENT_DOCKERHUB.md](DEPLOYMENT_DOCKERHUB.md)
 
 ### Требования к системе (Backend)
 - CPU: 2+ ядра
