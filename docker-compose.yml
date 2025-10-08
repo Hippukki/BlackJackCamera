@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  blackjackcamera-api:
+    build:
+      context: ./BlackJackCamera/BlackJackCamera.Api
+      dockerfile: Dockerfile
+    container_name: blackjackcamera-api
+    ports:
+      - "8080:8080"
+    volumes:
+      # Монтируем директорию с ML моделью (избегаем включения 275MB в образ)
+      - ./BlackJackCamera/BlackJackCamera/Resources/Raw:/app/Resources/Models:ro
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:8080
+      # Оптимизация для мощного сервера (8 ядер, 12GB RAM)
+      - DOTNET_ThreadPool_UnfairSemaphoreSpinLimit=6
+      - DOTNET_GCServer=1
+      - DOTNET_GCConcurrent=1
+      - DOTNET_gcServer=1
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/api/detection/health || exit 1"]
+      interval: 20s
+      timeout: 5s
+      retries: 3
+      start_period: 45s
+    deploy:
+      resources:
+        limits:
+          cpus: '6'        # Используем 6 из 8 ядер
+          memory: 8G       # 8GB из 12GB доступных
+        reservations:
+          cpus: '4'        # Минимум 4 ядра
+          memory: 4G       # Минимум 4GB RAM
+    # Настройки безопасности
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+    # Логирование
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "5"
