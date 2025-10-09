@@ -262,6 +262,8 @@ namespace BlackJackCamera
 
             foreach (var badge in badges)
             {
+                System.Diagnostics.Debug.WriteLine($"[DEBUG] Creating badge: {badge.Text}, Type: {badge.Type}");
+
                 var frame = new Frame
                 {
                     CornerRadius = 18,
@@ -275,6 +277,8 @@ namespace BlackJackCamera
                 // Специальный стиль для Special бейджа
                 if (badge.Type == CategoryBadgeMapper.BadgeType.Special)
                 {
+                    System.Diagnostics.Debug.WriteLine("[DEBUG] This is a SPECIAL badge - adding gradient and tap gesture");
+
                     // Градиентный фон для Special бейджа
                     frame.Background = new LinearGradientBrush(
                         new GradientStopCollection
@@ -293,11 +297,6 @@ namespace BlackJackCamera
                         Radius = 16,
                         Opacity = 0.4f
                     };
-
-                    // Добавляем TapGestureRecognizer для открытия рассрочки
-                    var tapGesture = new TapGestureRecognizer();
-                    tapGesture.Tapped += OnInstallmentBadgeTapped;
-                    frame.GestureRecognizers.Add(tapGesture);
 
                     _specialBadge = frame;
                 }
@@ -321,6 +320,16 @@ namespace BlackJackCamera
 
                 frame.Content = label;
                 BadgesContainer.Children.Add(frame);
+
+                // Добавляем TapGestureRecognizer ПОСЛЕ добавления в контейнер
+                if (badge.Type == CategoryBadgeMapper.BadgeType.Special)
+                {
+                    System.Diagnostics.Debug.WriteLine("[DEBUG] Adding TapGestureRecognizer to special badge");
+                    var tapGesture = new TapGestureRecognizer();
+                    tapGesture.Tapped += OnInstallmentBadgeTapped;
+                    frame.GestureRecognizers.Add(tapGesture);
+                    System.Diagnostics.Debug.WriteLine("[DEBUG] TapGestureRecognizer added successfully");
+                }
             }
 
             // Показываем Bottom Sheet с анимацией
@@ -609,12 +618,21 @@ namespace BlackJackCamera
         /// <summary>
         /// Обработчик клика по бейджу рассрочки
         /// </summary>
-        private async void OnInstallmentBadgeTapped(object sender, EventArgs e)
+        private async void OnInstallmentBadgeTapped(object? sender, EventArgs e)
         {
-            StopSpecialBadgePulse();
-            await HideBottomSheet();
-            await Task.Delay(200);
-            await ShowInstallmentOffer();
+            try
+            {
+                System.Diagnostics.Debug.WriteLine("[DEBUG] OnInstallmentBadgeTapped called");
+                StopSpecialBadgePulse();
+                await HideBottomSheet();
+                await Task.Delay(200);
+                await ShowInstallmentOffer();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[ERROR] OnInstallmentBadgeTapped: {ex.Message}");
+                await DisplayAlert("Ошибка", $"Не удалось открыть рассрочку: {ex.Message}", "OK");
+            }
         }
 
         /// <summary>
@@ -622,32 +640,45 @@ namespace BlackJackCamera
         /// </summary>
         private async Task ShowInstallmentOffer()
         {
-            // Выбираем случайную цену телефона
-            var random = new Random();
-            _selectedPhonePrice = _phonePrices[random.Next(_phonePrices.Length)];
+            try
+            {
+                System.Diagnostics.Debug.WriteLine("[DEBUG] ShowInstallmentOffer started");
 
-            // Обновляем UI
-            PhonePriceLabel.Text = $"Телефон за {_selectedPhonePrice:N0} ₽";
+                // Выбираем случайную цену телефона
+                var random = new Random();
+                _selectedPhonePrice = _phonePrices[random.Next(_phonePrices.Length)];
 
-            // Обновляем платежи для всех опций
-            UpdateInstallmentMonthlyPayments();
+                // Обновляем UI
+                PhonePriceLabel.Text = $"Телефон за {_selectedPhonePrice:N0} ₽";
 
-            // Сбрасываем выбор
-            ResetInstallmentDurationSelection();
+                // Обновляем платежи для всех опций
+                UpdateInstallmentMonthlyPayments();
 
-            // Показываем модальное окно с анимацией
-            InstallmentOfferModal.IsVisible = true;
-            InstallmentOfferModal.TranslationY = 800;
-            await Task.Delay(50);
+                // Сбрасываем выбор
+                ResetInstallmentDurationSelection();
 
-            // Сбрасываем на первый шаг
-            _installmentCurrentStep = 0;
-            ShowInstallmentStep(0);
-            UpdateInstallmentStepIndicators();
-            InstallmentActionButton.Text = "Продолжить";
-            InstallmentActionButton.IsEnabled = false; // Будет активна после выбора срока
+                // Показываем модальное окно с анимацией
+                InstallmentOfferModal.IsVisible = true;
+                InstallmentOfferModal.TranslationY = 800;
+                await Task.Delay(50);
 
-            await InstallmentOfferModal.TranslateTo(0, 0, 450, Easing.CubicOut);
+                // Сбрасываем на первый шаг
+                _installmentCurrentStep = 0;
+                ShowInstallmentStep(0);
+                UpdateInstallmentStepIndicators();
+                InstallmentActionButton.Text = "Продолжить";
+                InstallmentActionButton.IsEnabled = false; // Будет активна после выбора срока
+
+                System.Diagnostics.Debug.WriteLine("[DEBUG] Starting InstallmentOfferModal animation");
+                await InstallmentOfferModal.TranslateTo(0, 0, 450, Easing.CubicOut);
+                System.Diagnostics.Debug.WriteLine("[DEBUG] InstallmentOfferModal animation completed");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[ERROR] ShowInstallmentOffer: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"[ERROR] Stack trace: {ex.StackTrace}");
+                throw;
+            }
         }
 
         /// <summary>
