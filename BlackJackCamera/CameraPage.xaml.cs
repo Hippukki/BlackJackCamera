@@ -402,7 +402,7 @@ namespace BlackJackCamera
             _selectedCreditAmount = _maxCreditAmount / 2;
 
             // Обновляем UI
-            OfferTextLabel.Text = $"Вам одобрен кредит на покупку ноутбука на сумму до {_maxCreditAmount:N0} ₽";
+            OfferTextLabel.Text = $"Вам предодобрен кредит на покупку ноутбука на сумму до {_maxCreditAmount:N0} ₽";
             AmountSlider.Maximum = _maxCreditAmount;
             AmountSlider.Value = _selectedCreditAmount;
             MaxAmountLabel.Text = $"{_maxCreditAmount:N0} ₽";

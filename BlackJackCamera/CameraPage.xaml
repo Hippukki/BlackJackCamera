@@ -83,7 +83,7 @@
                 Padding="12,6"
                 HasShadow="False"
                 HorizontalOptions="Center">
-            <Label Text="Распознаём QR, номера телефона, карты и многое другое"
+            <Label Text="Распознаём автомобили, компьютерную технику и многое другое"
                    TextColor="#E6E6E6"
                    FontSize="14"
                    HorizontalOptions="Center"
@@ -254,14 +254,14 @@
                     </Border>
 
                     <StackLayout Spacing="10">
-                      <Label Text="Кредит одобрен!"
+                      <Label Text="Кредит предодобрен!"
                              TextColor="White"
                              FontSize="26"
                              FontAttributes="Bold"
                              HorizontalTextAlignment="Center"/>
 
                       <Label x:Name="OfferTextLabel"
-                             Text="Вам одобрен кредит на покупку ноутбука на сумму до 136 000 ₽"
+                             Text="Вам предодобрен кредит на покупку ноутбука на сумму до 136 000 ₽"
                              TextColor="#E6E6E6"
                              FontSize="16"
                              LineBreakMode="WordWrap"
