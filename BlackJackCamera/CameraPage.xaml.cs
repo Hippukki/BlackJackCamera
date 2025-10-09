@@ -190,11 +190,20 @@ namespace BlackJackCamera
                 return;
             }
 
+            System.Diagnostics.Debug.WriteLine($"[DEBUG] DisplayDetectionResults: {detections.Count} detections found");
+            foreach (var detection in detections)
+            {
+                System.Diagnostics.Debug.WriteLine($"[DEBUG] Detection: ClassId={detection.ClassId}, ClassName={detection.ClassName}");
+            }
+
             // Проверяем, есть ли категория "Ноутбук" среди распознанных объектов
             var categories = GetCategoriesFromDetections(detections);
 
+            System.Diagnostics.Debug.WriteLine($"[DEBUG] Categories found: {string.Join(", ", categories)}");
+
             if (categories.Contains("Ноутбук"))
             {
+                System.Diagnostics.Debug.WriteLine("[DEBUG] Laptop detected - showing credit offer");
                 // Показываем кредитный оффер вместо обычных бейджей
                 ShowCreditOffer();
                 return;
@@ -205,6 +214,7 @@ namespace BlackJackCamera
 
             if (badges == null || badges.Count == 0)
             {
+                System.Diagnostics.Debug.WriteLine("[DEBUG] No badges found for detections");
                 // Если нет бейджей для распознанных объектов, показываем обычный alert
                 HideLoadingUI();
 
@@ -217,6 +227,7 @@ namespace BlackJackCamera
                 return;
             }
 
+            System.Diagnostics.Debug.WriteLine($"[DEBUG] Found {badges.Count} badges, calling ShowBadges");
             // Отображаем бейджи
             ShowBadges(badges);
         }
@@ -715,6 +726,7 @@ namespace BlackJackCamera
         /// </summary>
         private void OnDuration6MonthsTapped(object sender, EventArgs e)
         {
+            System.Diagnostics.Debug.WriteLine("[DEBUG] OnDuration6MonthsTapped called");
             SelectInstallmentDuration(6);
         }
 
@@ -723,6 +735,7 @@ namespace BlackJackCamera
         /// </summary>
         private void OnDuration12MonthsTapped(object sender, EventArgs e)
         {
+            System.Diagnostics.Debug.WriteLine("[DEBUG] OnDuration12MonthsTapped called");
             SelectInstallmentDuration(12);
         }
 
@@ -731,6 +744,7 @@ namespace BlackJackCamera
         /// </summary>
         private void OnDuration24MonthsTapped(object sender, EventArgs e)
         {
+            System.Diagnostics.Debug.WriteLine("[DEBUG] OnDuration24MonthsTapped called");
             SelectInstallmentDuration(24);
         }
 
@@ -739,8 +753,12 @@ namespace BlackJackCamera
         /// </summary>
         private async void SelectInstallmentDuration(int months)
         {
+            System.Diagnostics.Debug.WriteLine($"[DEBUG] SelectInstallmentDuration called with {months} months");
+
             _selectedInstallmentDuration = months;
             InstallmentActionButton.IsEnabled = true;
+
+            System.Diagnostics.Debug.WriteLine($"[DEBUG] Button enabled: {InstallmentActionButton.IsEnabled}");
 
             // Сбрасываем все
             ResetInstallmentDurationSelection();
@@ -777,12 +795,18 @@ namespace BlackJackCamera
         /// </summary>
         private async void OnInstallmentActionButtonClicked(object sender, EventArgs e)
         {
+            System.Diagnostics.Debug.WriteLine($"[DEBUG] OnInstallmentActionButtonClicked - Step: {_installmentCurrentStep}, Duration: {_selectedInstallmentDuration}");
+
             if (_installmentCurrentStep == 0)
             {
                 // Шаг 1 -> Шаг 2 (Подтверждение)
                 if (_selectedInstallmentDuration == 0)
+                {
+                    System.Diagnostics.Debug.WriteLine("[DEBUG] No duration selected, returning");
                     return;
+                }
 
+                System.Diagnostics.Debug.WriteLine("[DEBUG] Moving to step 2 (confirmation)");
                 _installmentCurrentStep = 1;
                 ShowInstallmentStep(1);
                 UpdateInstallmentStepIndicators();
