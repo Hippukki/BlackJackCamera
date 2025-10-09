@@ -12,7 +12,8 @@ namespace BlackJackCamera.Services
         {
             Primary,   // Основные услуги (сине-фиолетовый)
             Secondary, // Остальные услуги (голубой → бирюзовый)
-            Discount   // Скидки (красный → прозрачный)
+            Discount,  // Скидки (красный → прозрачный)
+            Special    // Специальные предложения (анимированные)
         }
 
         /// <summary>
@@ -97,6 +98,16 @@ namespace BlackJackCamera.Services
                 new Badge("Кредит на смартфон", BadgeType.Secondary),
                 new Badge("Связаться с поддержкой", BadgeType.Secondary),
                 new Badge("Haier до 10%", BadgeType.Discount),
+                new Badge("Альфа-Маркет до 10%", BadgeType.Discount)
+            },
+
+            ["Телефон"] = new List<Badge>
+            {
+                new Badge("В рассрочку в Альфа-Маркете", BadgeType.Special),
+                new Badge("Мобильный банк", BadgeType.Primary),
+                new Badge("Перевод по номеру телефона", BadgeType.Primary),
+                new Badge("Подключить NFC-оплату", BadgeType.Secondary),
+                new Badge("Связаться с поддержкой", BadgeType.Secondary),
                 new Badge("Альфа-Маркет до 10%", BadgeType.Discount)
             },
 
@@ -197,9 +208,11 @@ namespace BlackJackCamera.Services
             [127] = "Ноутбук", // Компьютерная клавиатура
             [129] = "Ноутбук", // Компьютерная мышь
 
-            // Смартфон
-            [339] = "Смартфон", // Мобильный телефон
-            [526] = "Смартфон", // Телефон
+            // Телефон (приоритет для новой категории с рассрочкой)
+            [339] = "Телефон", // Мобильный телефон
+            [526] = "Телефон", // Телефон
+
+            // Смартфон (оставляем для совместимости)
             [135] = "Смартфон", // Проводной телефон
 
             // Бытовая техника

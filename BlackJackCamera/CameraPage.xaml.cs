@@ -20,6 +20,14 @@ namespace BlackJackCamera
         private int _selectedCreditAmount = 75000;
         private readonly int[] _creditAmounts = new[] { 85000, 120000, 136000, 98000, 150000, 110000 };
 
+        // Рассрочка
+        private int _installmentCurrentStep = 0;
+        private int _selectedPhonePrice = 89990;
+        private readonly int[] _phonePrices = new[] { 89990, 119990, 74990, 99990, 134990, 149990 };
+        private int _selectedInstallmentDuration = 0; // 6, 12, 24 месяцев
+        private Frame? _specialBadge = null;
+        private bool _isSpecialBadgePulsing = false;
+
         /// <summary>
         /// Инициализирует новый экземпляр страницы CameraPage
         /// </summary>
@@ -250,6 +258,7 @@ namespace BlackJackCamera
         {
             System.Diagnostics.Debug.WriteLine($"[DEBUG] ShowBadges called with {badges.Count} badges");
             BadgesContainer.Children.Clear();
+            _specialBadge = null;
 
             foreach (var badge in badges)
             {
@@ -263,7 +272,39 @@ namespace BlackJackCamera
                     Opacity = 0.8
                 };
 
-                frame.Background = Color.FromArgb("#0B0B0C");
+                // Специальный стиль для Special бейджа
+                if (badge.Type == CategoryBadgeMapper.BadgeType.Special)
+                {
+                    // Градиентный фон для Special бейджа
+                    frame.Background = new LinearGradientBrush(
+                        new GradientStopCollection
+                        {
+                            new GradientStop(Color.FromArgb("#EF3124"), 0.0f),
+                            new GradientStop(Color.FromArgb("#FF6B5E"), 1.0f)
+                        },
+                        new Point(0, 0),
+                        new Point(1, 1)
+                    );
+                    frame.Opacity = 1.0;
+                    frame.Shadow = new Shadow
+                    {
+                        Brush = Color.FromArgb("#EF3124"),
+                        Offset = new Point(0, 4),
+                        Radius = 16,
+                        Opacity = 0.4f
+                    };
+
+                    // Добавляем TapGestureRecognizer для открытия рассрочки
+                    var tapGesture = new TapGestureRecognizer();
+                    tapGesture.Tapped += OnInstallmentBadgeTapped;
+                    frame.GestureRecognizers.Add(tapGesture);
+
+                    _specialBadge = frame;
+                }
+                else
+                {
+                    frame.Background = Color.FromArgb("#0B0B0C");
+                }
 
                 var label = new Label
                 {
@@ -301,6 +342,12 @@ namespace BlackJackCamera
             System.Diagnostics.Debug.WriteLine("[DEBUG] Starting animation TranslateTo(0, 0)");
             await BottomSheet.TranslateTo(0, 0, 400, Easing.CubicOut);
             System.Diagnostics.Debug.WriteLine($"[DEBUG] Animation finished. TranslationY: {BottomSheet.TranslationY}");
+
+            // Запускаем пульсацию для Special бейджа
+            if (_specialBadge != null)
+            {
+                StartSpecialBadgePulse();
+            }
         }
 
         /// <summary>
@@ -352,6 +399,10 @@ namespace BlackJackCamera
             BottomSheet.TranslationY = 800; // Сбрасываем позицию для следующей анимации
             BadgesContainer.Children.Clear();
             ShutterButton.IsEnabled = true;
+
+            // Останавливаем пульсацию специального бейджа
+            StopSpecialBadgePulse();
+            _specialBadge = null;
         }
 
 
@@ -527,6 +578,261 @@ namespace BlackJackCamera
         }
 
         private Random random = new Random();
+
+        #endregion
+
+        #region Installment Offer (Рассрочка)
+
+        /// <summary>
+        /// Запускает анимацию пульсации для специального бейджа
+        /// </summary>
+        private async void StartSpecialBadgePulse()
+        {
+            _isSpecialBadgePulsing = true;
+
+            while (_isSpecialBadgePulsing && _specialBadge != null && _specialBadge.IsVisible)
+            {
+                // Пульсация scale с небольшим свечением
+                await _specialBadge.ScaleTo(1.08, 1000, Easing.SinInOut);
+                await _specialBadge.ScaleTo(1.0, 1000, Easing.SinInOut);
+            }
+        }
+
+        /// <summary>
+        /// Останавливает анимацию пульсации
+        /// </summary>
+        private void StopSpecialBadgePulse()
+        {
+            _isSpecialBadgePulsing = false;
+        }
+
+        /// <summary>
+        /// Обработчик клика по бейджу рассрочки
+        /// </summary>
+        private async void OnInstallmentBadgeTapped(object sender, EventArgs e)
+        {
+            StopSpecialBadgePulse();
+            await HideBottomSheet();
+            await Task.Delay(200);
+            await ShowInstallmentOffer();
+        }
+
+        /// <summary>
+        /// Показывает оффер рассрочки
+        /// </summary>
+        private async Task ShowInstallmentOffer()
+        {
+            // Выбираем случайную цену телефона
+            var random = new Random();
+            _selectedPhonePrice = _phonePrices[random.Next(_phonePrices.Length)];
+
+            // Обновляем UI
+            PhonePriceLabel.Text = $"Телефон за {_selectedPhonePrice:N0} ₽";
+
+            // Обновляем платежи для всех опций
+            UpdateInstallmentMonthlyPayments();
+
+            // Сбрасываем выбор
+            ResetInstallmentDurationSelection();
+
+            // Показываем модальное окно с анимацией
+            InstallmentOfferModal.IsVisible = true;
+            InstallmentOfferModal.TranslationY = 800;
+            await Task.Delay(50);
+
+            // Сбрасываем на первый шаг
+            _installmentCurrentStep = 0;
+            ShowInstallmentStep(0);
+            UpdateInstallmentStepIndicators();
+            InstallmentActionButton.Text = "Продолжить";
+            InstallmentActionButton.IsEnabled = false; // Будет активна после выбора срока
+
+            await InstallmentOfferModal.TranslateTo(0, 0, 450, Easing.CubicOut);
+        }
+
+        /// <summary>
+        /// Обновляет ежемесячные платежи для всех опций
+        /// </summary>
+        private void UpdateInstallmentMonthlyPayments()
+        {
+            Monthly6Label.Text = $"≈ {(_selectedPhonePrice / 6):N0} ₽/мес";
+            Monthly12Label.Text = $"≈ {(_selectedPhonePrice / 12):N0} ₽/мес";
+            Monthly24Label.Text = $"≈ {(_selectedPhonePrice / 24):N0} ₽/мес";
+        }
+
+        /// <summary>
+        /// Сбрасывает выбор срока рассрочки
+        /// </summary>
+        private void ResetInstallmentDurationSelection()
+        {
+            Duration6Months.BackgroundColor = Color.FromArgb("#F8F8F8");
+            Duration12Months.BackgroundColor = Color.FromArgb("#F8F8F8");
+            Duration24Months.BackgroundColor = Color.FromArgb("#F8F8F8");
+
+            Check6Months.Text = "○";
+            Check6Months.TextColor = Color.FromArgb("#D0D0D0");
+            Check12Months.Text = "○";
+            Check12Months.TextColor = Color.FromArgb("#D0D0D0");
+            Check24Months.Text = "○";
+            Check24Months.TextColor = Color.FromArgb("#D0D0D0");
+
+            _selectedInstallmentDuration = 0;
+        }
+
+        /// <summary>
+        /// Обработчик выбора 6 месяцев
+        /// </summary>
+        private void OnDuration6MonthsTapped(object sender, EventArgs e)
+        {
+            SelectInstallmentDuration(6);
+        }
+
+        /// <summary>
+        /// Обработчик выбора 12 месяцев
+        /// </summary>
+        private void OnDuration12MonthsTapped(object sender, EventArgs e)
+        {
+            SelectInstallmentDuration(12);
+        }
+
+        /// <summary>
+        /// Обработчик выбора 24 месяцев
+        /// </summary>
+        private void OnDuration24MonthsTapped(object sender, EventArgs e)
+        {
+            SelectInstallmentDuration(24);
+        }
+
+        /// <summary>
+        /// Выбирает срок рассрочки и обновляет UI
+        /// </summary>
+        private async void SelectInstallmentDuration(int months)
+        {
+            _selectedInstallmentDuration = months;
+            InstallmentActionButton.IsEnabled = true;
+
+            // Сбрасываем все
+            ResetInstallmentDurationSelection();
+
+            // Выбираем нужный
+            if (months == 6)
+            {
+                Duration6Months.BackgroundColor = Color.FromArgb("#FFF8F7");
+                Check6Months.Text = "●";
+                Check6Months.TextColor = Color.FromArgb("#EF3124");
+                await Duration6Months.ScaleTo(1.05, 100, Easing.CubicOut);
+                await Duration6Months.ScaleTo(1.0, 100, Easing.CubicIn);
+            }
+            else if (months == 12)
+            {
+                Duration12Months.BackgroundColor = Color.FromArgb("#FFF8F7");
+                Check12Months.Text = "●";
+                Check12Months.TextColor = Color.FromArgb("#EF3124");
+                await Duration12Months.ScaleTo(1.05, 100, Easing.CubicOut);
+                await Duration12Months.ScaleTo(1.0, 100, Easing.CubicIn);
+            }
+            else if (months == 24)
+            {
+                Duration24Months.BackgroundColor = Color.FromArgb("#FFF8F7");
+                Check24Months.Text = "●";
+                Check24Months.TextColor = Color.FromArgb("#EF3124");
+                await Duration24Months.ScaleTo(1.05, 100, Easing.CubicOut);
+                await Duration24Months.ScaleTo(1.0, 100, Easing.CubicIn);
+            }
+        }
+
+        /// <summary>
+        /// Обработчик нажатия кнопки действия в рассрочке
+        /// </summary>
+        private async void OnInstallmentActionButtonClicked(object sender, EventArgs e)
+        {
+            if (_installmentCurrentStep == 0)
+            {
+                // Шаг 1 -> Шаг 2 (Подтверждение)
+                if (_selectedInstallmentDuration == 0)
+                    return;
+
+                _installmentCurrentStep = 1;
+                ShowInstallmentStep(1);
+                UpdateInstallmentStepIndicators();
+                InstallmentActionButton.Text = "Отправить заявку";
+
+                // Обновляем данные подтверждения
+                ConfirmPhoneLabel.Text = "Смартфон";
+                ConfirmPriceLabel.Text = $"{_selectedPhonePrice:N0} ₽";
+                ConfirmDurationLabel.Text = $"{_selectedInstallmentDuration} {GetMonthsWord(_selectedInstallmentDuration)}";
+                ConfirmMonthlyLabel.Text = $"{(_selectedPhonePrice / _selectedInstallmentDuration):N0} ₽";
+            }
+            else if (_installmentCurrentStep == 1)
+            {
+                // Шаг 2 -> Шаг 3 (Результат)
+                _installmentCurrentStep = 2;
+                ShowInstallmentStep(2);
+                UpdateInstallmentStepIndicators();
+                InstallmentActionButton.Text = "Готово";
+
+                // Генерируем номер заявки
+                var applicationNumber = $"#2025-{random.Next(10000000, 99999999)}";
+                InstallmentApplicationNumberLabel.Text = applicationNumber;
+            }
+            else if (_installmentCurrentStep == 2)
+            {
+                // Шаг 3 -> Закрыть модальное окно
+                await HideInstallmentOffer();
+            }
+        }
+
+        /// <summary>
+        /// Возвращает правильную форму слова "месяц"
+        /// </summary>
+        private string GetMonthsWord(int months)
+        {
+            if (months == 1 || months == 21)
+                return "месяц";
+            else if (months >= 2 && months <= 4 || months >= 22 && months <= 24)
+                return "месяца";
+            else
+                return "месяцев";
+        }
+
+        /// <summary>
+        /// Показывает указанный шаг рассрочки
+        /// </summary>
+        private void ShowInstallmentStep(int stepIndex)
+        {
+            InstallmentStep1Content.IsVisible = stepIndex == 0;
+            InstallmentStep2Content.IsVisible = stepIndex == 1;
+            InstallmentStep3Content.IsVisible = stepIndex == 2;
+        }
+
+        /// <summary>
+        /// Обновляет индикаторы шагов рассрочки
+        /// </summary>
+        private void UpdateInstallmentStepIndicators()
+        {
+            var color1 = _installmentCurrentStep == 0 ? Color.FromArgb("#EF3124") : Color.FromArgb("#E8E8E8");
+            var color2 = _installmentCurrentStep == 1 ? Color.FromArgb("#EF3124") : Color.FromArgb("#E8E8E8");
+            var color3 = _installmentCurrentStep == 2 ? Color.FromArgb("#EF3124") : Color.FromArgb("#E8E8E8");
+
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                InstallmentStep1Indicator.BackgroundColor = color1;
+                InstallmentStep2Indicator.BackgroundColor = color2;
+                InstallmentStep3Indicator.BackgroundColor = color3;
+            });
+        }
+
+        /// <summary>
+        /// Скрывает оффер рассрочки
+        /// </summary>
+        private async Task HideInstallmentOffer()
+        {
+            await InstallmentOfferModal.TranslateTo(0, 800, 350, Easing.CubicIn);
+            InstallmentOfferModal.IsVisible = false;
+
+            // Сбрасываем UI камеры
+            HideLoadingUI();
+        }
 
         #endregion
 
