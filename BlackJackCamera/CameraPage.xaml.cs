@@ -590,8 +590,11 @@ namespace BlackJackCamera
                 _installmentCurrentStep = 0;
                 ShowInstallmentStep(0);
                 UpdateInstallmentStepIndicators();
-                InstallmentActionButton.Text = "Продолжить";
-                InstallmentActionButton.IsEnabled = false; // Будет активна после выбора срока
+                InstallmentActionButton.Text = "Выбрать срок";
+
+                // Устанавливаем срок по умолчанию 12 месяцев
+                _selectedInstallmentDuration = 12;
+                SelectInstallmentDuration(12);
 
                 System.Diagnostics.Debug.WriteLine("[DEBUG] Starting InstallmentOfferModal animation");
                 await InstallmentOfferModal.TranslateTo(0, 0, 450, Easing.CubicOut);
@@ -713,12 +716,6 @@ namespace BlackJackCamera
             if (_installmentCurrentStep == 0)
             {
                 // Шаг 1 -> Шаг 2 (Подтверждение)
-                if (_selectedInstallmentDuration == 0)
-                {
-                    System.Diagnostics.Debug.WriteLine("[DEBUG] No duration selected, returning");
-                    return;
-                }
-
                 System.Diagnostics.Debug.WriteLine("[DEBUG] Moving to step 2 (confirmation)");
                 _installmentCurrentStep = 1;
                 ShowInstallmentStep(1);
