@@ -665,16 +665,16 @@ namespace BlackJackCamera
         /// </summary>
         private void ResetInstallmentDurationSelection()
         {
-            Duration6Months.BackgroundColor = Color.FromArgb("#F8F8F8");
-            Duration12Months.BackgroundColor = Color.FromArgb("#F8F8F8");
-            Duration24Months.BackgroundColor = Color.FromArgb("#F8F8F8");
+            Duration6Months.BackgroundColor = Color.FromArgb("#1B1B1C");
+            Duration12Months.BackgroundColor = Color.FromArgb("#1B1B1C");
+            Duration24Months.BackgroundColor = Color.FromArgb("#1B1B1C");
 
             Check6Months.Text = "○";
-            Check6Months.TextColor = Color.FromArgb("#D0D0D0");
+            Check6Months.TextColor = Color.FromArgb("#3D3D3D");
             Check12Months.Text = "○";
-            Check12Months.TextColor = Color.FromArgb("#D0D0D0");
+            Check12Months.TextColor = Color.FromArgb("#3D3D3D");
             Check24Months.Text = "○";
-            Check24Months.TextColor = Color.FromArgb("#D0D0D0");
+            Check24Months.TextColor = Color.FromArgb("#3D3D3D");
 
             _selectedInstallmentDuration = 0;
         }
@@ -717,7 +717,7 @@ namespace BlackJackCamera
             // Выбираем нужный
             if (months == 6)
             {
-                Duration6Months.BackgroundColor = Color.FromArgb("#FFF8F7");
+                Duration6Months.BackgroundColor = Color.FromArgb("#2B2B2D");
                 Check6Months.Text = "●";
                 Check6Months.TextColor = Color.FromArgb("#EF3124");
                 await Duration6Months.ScaleTo(1.05, 100, Easing.CubicOut);
@@ -725,7 +725,7 @@ namespace BlackJackCamera
             }
             else if (months == 12)
             {
-                Duration12Months.BackgroundColor = Color.FromArgb("#FFF8F7");
+                Duration12Months.BackgroundColor = Color.FromArgb("#2B2B2D");
                 Check12Months.Text = "●";
                 Check12Months.TextColor = Color.FromArgb("#EF3124");
                 await Duration12Months.ScaleTo(1.05, 100, Easing.CubicOut);
@@ -733,7 +733,7 @@ namespace BlackJackCamera
             }
             else if (months == 24)
             {
-                Duration24Months.BackgroundColor = Color.FromArgb("#FFF8F7");
+                Duration24Months.BackgroundColor = Color.FromArgb("#2B2B2D");
                 Check24Months.Text = "●";
                 Check24Months.TextColor = Color.FromArgb("#EF3124");
                 await Duration24Months.ScaleTo(1.05, 100, Easing.CubicOut);
@@ -810,9 +810,9 @@ namespace BlackJackCamera
         /// </summary>
         private void UpdateInstallmentStepIndicators()
         {
-            var color1 = _installmentCurrentStep == 0 ? Color.FromArgb("#EF3124") : Color.FromArgb("#E8E8E8");
-            var color2 = _installmentCurrentStep == 1 ? Color.FromArgb("#EF3124") : Color.FromArgb("#E8E8E8");
-            var color3 = _installmentCurrentStep == 2 ? Color.FromArgb("#EF3124") : Color.FromArgb("#E8E8E8");
+            var color1 = _installmentCurrentStep == 0 ? Color.FromArgb("#EF3124") : Color.FromArgb("#2B2B2D");
+            var color2 = _installmentCurrentStep == 1 ? Color.FromArgb("#EF3124") : Color.FromArgb("#2B2B2D");
+            var color3 = _installmentCurrentStep == 2 ? Color.FromArgb("#EF3124") : Color.FromArgb("#2B2B2D");
 
             MainThread.BeginInvokeOnMainThread(() =>
             {
