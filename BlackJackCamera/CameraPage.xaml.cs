@@ -671,13 +671,14 @@ namespace BlackJackCamera
         {
             System.Diagnostics.Debug.WriteLine($"[DEBUG] SelectInstallmentDuration called with {months} months");
 
+            // Сбрасываем все сначала
+            ResetInstallmentDurationSelection();
+
+            // Потом устанавливаем выбранный срок
             _selectedInstallmentDuration = months;
             InstallmentActionButton.IsEnabled = true;
 
             System.Diagnostics.Debug.WriteLine($"[DEBUG] Button enabled: {InstallmentActionButton.IsEnabled}");
-
-            // Сбрасываем все
-            ResetInstallmentDurationSelection();
 
             // Выбираем нужный
             if (months == 6)
