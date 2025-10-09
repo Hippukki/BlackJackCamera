@@ -25,8 +25,6 @@ namespace BlackJackCamera
         private int _selectedPhonePrice = 89990;
         private readonly int[] _phonePrices = new[] { 89990, 119990, 74990, 99990, 134990, 149990 };
         private int _selectedInstallmentDuration = 0; // 6, 12, 24 месяцев
-        private Frame? _specialBadge = null;
-        private bool _isSpecialBadgePulsing = false;
 
         /// <summary>
         /// Инициализирует новый экземпляр страницы CameraPage
@@ -209,6 +207,14 @@ namespace BlackJackCamera
                 return;
             }
 
+            if (categories.Contains("Телефон"))
+            {
+                System.Diagnostics.Debug.WriteLine("[DEBUG] Phone detected - showing installment offer");
+                // Показываем оффер рассрочки вместо обычных бейджей
+                ShowInstallmentOffer();
+                return;
+            }
+
             // Получаем бейджи для распознанных объектов
             var badges = CategoryBadgeMapper.GetBadgesForDetections(detections);
 
@@ -269,7 +275,6 @@ namespace BlackJackCamera
         {
             System.Diagnostics.Debug.WriteLine($"[DEBUG] ShowBadges called with {badges.Count} badges");
             BadgesContainer.Children.Clear();
-            _specialBadge = null;
 
             foreach (var badge in badges)
             {
@@ -285,36 +290,7 @@ namespace BlackJackCamera
                     Opacity = 0.8
                 };
 
-                // Специальный стиль для Special бейджа
-                if (badge.Type == CategoryBadgeMapper.BadgeType.Special)
-                {
-                    System.Diagnostics.Debug.WriteLine("[DEBUG] This is a SPECIAL badge - adding gradient and tap gesture");
-
-                    // Градиентный фон для Special бейджа
-                    frame.Background = new LinearGradientBrush(
-                        new GradientStopCollection
-                        {
-                            new GradientStop(Color.FromArgb("#EF3124"), 0.0f),
-                            new GradientStop(Color.FromArgb("#FF6B5E"), 1.0f)
-                        },
-                        new Point(0, 0),
-                        new Point(1, 1)
-                    );
-                    frame.Opacity = 1.0;
-                    frame.Shadow = new Shadow
-                    {
-                        Brush = Color.FromArgb("#EF3124"),
-                        Offset = new Point(0, 4),
-                        Radius = 16,
-                        Opacity = 0.4f
-                    };
-
-                    _specialBadge = frame;
-                }
-                else
-                {
-                    frame.Background = Color.FromArgb("#0B0B0C");
-                }
+                frame.Background = Color.FromArgb("#0B0B0C");
 
                 var label = new Label
                 {
@@ -331,16 +307,6 @@ namespace BlackJackCamera
 
                 frame.Content = label;
                 BadgesContainer.Children.Add(frame);
-
-                // Добавляем TapGestureRecognizer ПОСЛЕ добавления в контейнер
-                if (badge.Type == CategoryBadgeMapper.BadgeType.Special)
-                {
-                    System.Diagnostics.Debug.WriteLine("[DEBUG] Adding TapGestureRecognizer to special badge");
-                    var tapGesture = new TapGestureRecognizer();
-                    tapGesture.Tapped += OnInstallmentBadgeTapped;
-                    frame.GestureRecognizers.Add(tapGesture);
-                    System.Diagnostics.Debug.WriteLine("[DEBUG] TapGestureRecognizer added successfully");
-                }
             }
 
             // Показываем Bottom Sheet с анимацией
@@ -362,12 +328,6 @@ namespace BlackJackCamera
             System.Diagnostics.Debug.WriteLine("[DEBUG] Starting animation TranslateTo(0, 0)");
             await BottomSheet.TranslateTo(0, 0, 400, Easing.CubicOut);
             System.Diagnostics.Debug.WriteLine($"[DEBUG] Animation finished. TranslationY: {BottomSheet.TranslationY}");
-
-            // Запускаем пульсацию для Special бейджа
-            if (_specialBadge != null)
-            {
-                StartSpecialBadgePulse();
-            }
         }
 
         /// <summary>
@@ -419,10 +379,6 @@ namespace BlackJackCamera
             BottomSheet.TranslationY = 800; // Сбрасываем позицию для следующей анимации
             BadgesContainer.Children.Clear();
             ShutterButton.IsEnabled = true;
-
-            // Останавливаем пульсацию специального бейджа
-            StopSpecialBadgePulse();
-            _specialBadge = null;
         }
 
 
@@ -604,52 +560,9 @@ namespace BlackJackCamera
         #region Installment Offer (Рассрочка)
 
         /// <summary>
-        /// Запускает анимацию пульсации для специального бейджа
-        /// </summary>
-        private async void StartSpecialBadgePulse()
-        {
-            _isSpecialBadgePulsing = true;
-
-            while (_isSpecialBadgePulsing && _specialBadge != null && _specialBadge.IsVisible)
-            {
-                // Пульсация scale с небольшим свечением
-                await _specialBadge.ScaleTo(1.08, 1000, Easing.SinInOut);
-                await _specialBadge.ScaleTo(1.0, 1000, Easing.SinInOut);
-            }
-        }
-
-        /// <summary>
-        /// Останавливает анимацию пульсации
-        /// </summary>
-        private void StopSpecialBadgePulse()
-        {
-            _isSpecialBadgePulsing = false;
-        }
-
-        /// <summary>
-        /// Обработчик клика по бейджу рассрочки
-        /// </summary>
-        private async void OnInstallmentBadgeTapped(object? sender, EventArgs e)
-        {
-            try
-            {
-                System.Diagnostics.Debug.WriteLine("[DEBUG] OnInstallmentBadgeTapped called");
-                StopSpecialBadgePulse();
-                await HideBottomSheet();
-                await Task.Delay(200);
-                await ShowInstallmentOffer();
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"[ERROR] OnInstallmentBadgeTapped: {ex.Message}");
-                await DisplayAlert("Ошибка", $"Не удалось открыть рассрочку: {ex.Message}", "OK");
-            }
-        }
-
-        /// <summary>
         /// Показывает оффер рассрочки
         /// </summary>
-        private async Task ShowInstallmentOffer()
+        private async void ShowInstallmentOffer()
         {
             try
             {

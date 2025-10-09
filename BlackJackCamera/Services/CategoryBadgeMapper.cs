@@ -103,7 +103,6 @@ namespace BlackJackCamera.Services
 
             ["Телефон"] = new List<Badge>
             {
-                new Badge("В рассрочку в Альфа-Маркете", BadgeType.Special),
                 new Badge("Мобильный банк", BadgeType.Primary),
                 new Badge("Перевод по номеру телефона", BadgeType.Primary),
                 new Badge("Подключить NFC-оплату", BadgeType.Secondary),
